@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import Routes from './components/Router'
+import Pricelist from './components/Pricelist'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <Routes /> */}
+    {/* <App /> */}
+    <Pricelist />
   </React.StrictMode>,
   document.getElementById('root')
 );
