@@ -1,11 +1,17 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import Input from './components/Input.js';
+import Navigations from './components/Navigations';
 
 function App() {
   return (
     <>
       <h1>Pasar Medan</h1>
-      <Input />
+      {/* <Input /> */}
+      {/* <Navigations /> */}
+      <Switch>
+        <Route path = '/dashboard' component = {Navigations} />
+      </Switch>
     </>
   )
 }

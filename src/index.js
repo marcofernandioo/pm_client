@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import Routes from './components/Router'
 import Pricelist from './components/Pricelist'
+import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Routes /> */}
-    {/* <App /> */}
-    <Pricelist />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
