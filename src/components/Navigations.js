@@ -31,6 +31,7 @@ import Pricelist from './Pricelist';
 import Statistics from './Statistics';
 import Orderlist from './Orderlist';
 import EditProduct from './EditProduct';
+import AddProduct from './AddProduct';
 
 
 const drawerWidth = 240;
@@ -181,6 +182,7 @@ export default function MiniDrawer() {
             <Route path = '/dashboard/order' component = {Input} />
             <Route path = '/dashboard/statistics' component = {Statistics} />
             <Route path = '/dashboard/edit/:id' component = {EditProduct} />
+            <Route path = '/dashboard/add' component = {AddProduct} />
             <Route path = '/dashboard' component = {Orderlist} />
         </Switch>
       </main>

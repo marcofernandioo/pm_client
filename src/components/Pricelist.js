@@ -5,11 +5,19 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {getPricelist, deleteProduct, editProduct} from '../api';
 
 export default function Pricelist () {
     const [products, setProducts] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [id, setId] = useState({});
+
     const columns = [
         // {
         //     name: 'category', 
@@ -43,7 +51,7 @@ export default function Pricelist () {
                             </Tooltip>
                             <Tooltip title = "Delete Product">
                                 <IconButton>
-                                    <DeleteIcon onClick = {() => console.log(id)}/>
+                                    <DeleteIcon onClick = {() => handleClickOpen(id)}/>
                                 </IconButton>
                             </Tooltip>
                         </div>
@@ -60,7 +68,7 @@ export default function Pricelist () {
 
     useEffect(() => {
         loadPricelist();
-    }, []);
+    }, [products]);
 
     const loadPricelist = () => {
         getPricelist()
@@ -76,7 +84,22 @@ export default function Pricelist () {
     }
 
     const onDeleteProduct = (id) => {
-        alert(id);
+        deleteProduct(id)
+        .then((res) => {
+            // console.log(res);
+            if (res.data.status == 'ok') setOpen(false);
+            else alert(res.data.msg);
+        })
+        .catch(err => console.log(err));
+    }
+
+    const handleClickOpen = (id) => {
+        setId(id);
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
     }
 
     return (
@@ -85,8 +108,6 @@ export default function Pricelist () {
                 style = {{marginBottom: '10px'}}
                 variant = "contained" 
                 color = "primary"
-                // component = {Link}
-                // to = "/home/addtask"
                 onClick = {() => window.location.href = '/dashboard/add'}
             >
                 Tambahkan produk
@@ -97,6 +118,27 @@ export default function Pricelist () {
                 columns = {columns}
                 options = {options}
             />
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Hapus Produk Ini?"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Produk yang dihapus tidak dapat dibalikkan kembali.
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    Kembali
+                </Button>
+                <Button onClick={() => onDeleteProduct(id)} color="primary" autoFocus>
+                    Hapus
+                </Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }           

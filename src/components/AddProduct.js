@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -7,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
-import {getProduct, editProduct} from '../api';
+import {addProduct} from '../api';
 
 const useStyles = makeStyles(() => ({
     columnData: {
@@ -48,36 +47,20 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-export default function EditProduct () {
+export default function AddProduct () {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState(1000);
 
-    let {id} = useParams();
     const classes = useStyles();
 
-    useEffect(() => {
-        getProduct(id)
+    const onSubmitProduct = (name, category, price) => {
+        addProduct(name, category, price)
         .then((res) => {
-            if (res.data.status == 'ok') {
-                setName(res.data.product.name);
-                setCategory(res.data.product.category);
-                setPrice(res.data.product.price);
-            }
+            if (res.data.status == 'ok') window.location.href = '/dashboard/pricelist'
             else alert(res.data.msg);
-            
         })
-        .catch((err) => console.log(err));
-    }, []);
-
-    const submitEditProduct = () => {
-        editProduct(id,name,category,price)
-        .then((res) => {
-            if (res.data.status == 'ok') {
-                console.log('Product edited');
-                window.location.href = '/dashboard/pricelist';
-            } else console.log('Coba ulang kembali');
-        })
+        .catch((err) => alert(err))
     }
 
     return (
@@ -85,9 +68,9 @@ export default function EditProduct () {
             <Card>
                 <CardContent>
                     <Grid>
-                        <h2>UBAH PRODUK</h2>
+                        <h2>TAMBAHKAN PRODUK BARU</h2>
                         <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Nama Buah</div>
+                            <div className = {classes.columnName}>Nama Lengkap Buah</div>
                             <div className = {classes.columnData}> 
                                 <TextField 
                                     type = "text" 
@@ -96,7 +79,7 @@ export default function EditProduct () {
                                     className = {classes.textField} 
                                     value = {name}
                                     onChange = {(e) => setName(e.target.value)}
-                                    
+                                    placeholder = "Mangga Harum Manis"
                                 />
                             </div>
                         </div>
@@ -110,6 +93,7 @@ export default function EditProduct () {
                                     className = {classes.textField} 
                                     onChange = {(e) => setCategory(e.target.value)}
                                     value = {category}
+                                    placeholder = "Mangga"
                                 />
                             </div>
                         </div>
@@ -135,10 +119,10 @@ export default function EditProduct () {
                         </Button>
                         <Button
                             variant = "contained"
-                            onClick = {submitEditProduct}
+                            onClick = {() => onSubmitProduct(name, category, price)}
                             color = "secondary"
                         >
-                            ubah
+                            tambah
                         </Button>
 
                     </Grid>
