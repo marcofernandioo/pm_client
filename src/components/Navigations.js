@@ -28,7 +28,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 import Input from './Input';
 import Pricelist from './Pricelist';
-import Statistics from './Statistics';
+import Sales from './Sales';
 import Orderlist from './Orderlist';
 import EditProduct from './EditProduct';
 import AddProduct from './AddProduct';
@@ -157,19 +157,19 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          <ListItem button onClick = {() => window.location.href = '/dashboard/order'} >
+          <ListItem button onClick = {() => window.location.href = '/order'} >
               <ListItemIcon><AddIcon/></ListItemIcon>
               <ListItemText primary = {"Add Order"} />
           </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/dashboard/'} >
+          <ListItem button onClick = {() => window.location.href = '/'} >
               <ListItemIcon><FormatListBulletedIcon/></ListItemIcon>
               <ListItemText primary = {"Orderlist"} />
           </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/dashboard/pricelist'} >
+          <ListItem button onClick = {() => window.location.href = '/pricelist'} >
               <ListItemIcon><MenuBookIcon/></ListItemIcon>
               <ListItemText primary = {"Pricelist"} />
           </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/dashboard/sales'} >
+          <ListItem button onClick = {() => window.location.href = '/sales'} >
               <ListItemIcon><EqualizerIcon/></ListItemIcon>
               <ListItemText primary = {"Sales"} />
           </ListItem>
@@ -178,12 +178,13 @@ export default function MiniDrawer() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-            <Route path = '/dashboard/pricelist' component = {Pricelist} />
-            <Route path = '/dashboard/order' component = {Input} />
-            <Route path = '/dashboard/statistics' component = {Statistics} />
-            <Route path = '/dashboard/edit/:id' component = {EditProduct} />
-            <Route path = '/dashboard/add' component = {AddProduct} />
-            <Route path = '/dashboard' component = {Orderlist} />
+            
+            <Route path = '/pricelist' component = {Pricelist} />
+            <Route path = '/order' component = {Input} />
+            <Route path = '/sales' component = {Sales} />
+            <Route path = '/edit/:id' component = {EditProduct} />
+            <Route path = '/add' component = {AddProduct} />
+            <Route exact path = '/' component = {Orderlist} />
         </Switch>
       </main>
     </div>

@@ -57,7 +57,7 @@ export default function AddProduct () {
     const onSubmitProduct = (name, category, price) => {
         addProduct(name, category, price)
         .then((res) => {
-            if (res.data.status == 'ok') window.location.href = '/dashboard/pricelist'
+            if (res.data.status == 'ok') window.location.href = '/pricelist'
             else alert(res.data.msg);
         })
         .catch((err) => alert(err))
@@ -79,7 +79,7 @@ export default function AddProduct () {
                                     className = {classes.textField} 
                                     value = {name}
                                     onChange = {(e) => setName(e.target.value)}
-                                    placeholder = "Mangga Harum Manis"
+                                    placeholder = "contoh: Mangga Harum Manis"
                                 />
                             </div>
                         </div>
@@ -93,7 +93,7 @@ export default function AddProduct () {
                                     className = {classes.textField} 
                                     onChange = {(e) => setCategory(e.target.value)}
                                     value = {category}
-                                    placeholder = "Mangga"
+                                    placeholder = "contoh: Mangga"
                                 />
                             </div>
                         </div>
@@ -112,7 +112,7 @@ export default function AddProduct () {
                         </div>
                         <Button
                             variant = "contained"
-                            onClick = {() => window.location.href = '/dashboard/pricelist'}
+                            onClick = {() => window.location.href = '/pricelist'}
                             style = {{marginRight: '20px'}}
                         >
                             kembali

@@ -80,7 +80,7 @@ export default function Pricelist () {
     }
 
     const redirectToEditProduct = (id) => {
-        window.location.href = '/dashboard/edit/'+id
+        window.location.href = '/edit/'+id
     }
 
     const onDeleteProduct = (id) => {
@@ -108,7 +108,7 @@ export default function Pricelist () {
                 style = {{marginBottom: '10px'}}
                 variant = "contained" 
                 color = "primary"
-                onClick = {() => window.location.href = '/dashboard/add'}
+                onClick = {() => window.location.href = '/add'}
             >
                 Tambahkan produk
             </Button>

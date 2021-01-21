@@ -10,7 +10,7 @@ function App() {
       {/* <Input /> */}
       {/* <Navigations /> */}
       <Switch>
-        <Route path = '/dashboard' component = {Navigations} />
+        <Route path = '/' component = {Navigations} />
       </Switch>
     </>
   )

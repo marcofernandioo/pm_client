@@ -74,8 +74,8 @@ export default function EditProduct () {
         editProduct(id,name,category,price)
         .then((res) => {
             if (res.data.status == 'ok') {
-                console.log('Product edited');
-                window.location.href = '/dashboard/pricelist';
+                window.location.href = '/pricelist';
+                alert('Product edited');
             } else console.log('Coba ulang kembali');
         })
     }
@@ -100,7 +100,7 @@ export default function EditProduct () {
                                 />
                             </div>
                         </div>
-                        <div className = {classes.rowContainer}>
+                        {/* <div className = {classes.rowContainer}>
                             <div className = {classes.columnName}>Jenis Buah</div>
                             <div className = {classes.columnData}> 
                                 <TextField 
@@ -112,7 +112,7 @@ export default function EditProduct () {
                                     value = {category}
                                 />
                             </div>
-                        </div>
+                        </div> */}
                         <div className = {classes.rowContainer}>
                             <div className = {classes.columnName}>Harga Jual</div>
                             <div className = {classes.columnData}> 
@@ -128,7 +128,7 @@ export default function EditProduct () {
                         </div>
                         <Button
                             variant = "contained"
-                            onClick = {() => window.location.href = '/dashboard/pricelist'}
+                            onClick = {() => window.location.href = '/pricelist'}
                             style = {{marginRight: '20px'}}
                         >
                             kembali
