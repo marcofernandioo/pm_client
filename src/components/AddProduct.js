@@ -60,7 +60,7 @@ export default function AddProduct () {
             if (res.data.status == 'ok') window.location.href = '/pricelist'
             else alert(res.data.msg);
         })
-        .catch((err) => alert(err))
+        .catch((err) => alert('Coba ulangi kembali'))
     }
 
     return (
@@ -79,11 +79,11 @@ export default function AddProduct () {
                                     className = {classes.textField} 
                                     value = {name}
                                     onChange = {(e) => setName(e.target.value)}
-                                    placeholder = "contoh: Mangga Harum Manis"
+                                    placeholder = "contoh. Mangga Harum Manis"
                                 />
                             </div>
                         </div>
-                        <div className = {classes.rowContainer}>
+                        {/* <div className = {classes.rowContainer}>
                             <div className = {classes.columnName}>Jenis Buah</div>
                             <div className = {classes.columnData}> 
                                 <TextField 
@@ -96,7 +96,7 @@ export default function AddProduct () {
                                     placeholder = "contoh: Mangga"
                                 />
                             </div>
-                        </div>
+                        </div> */}
                         <div className = {classes.rowContainer}>
                             <div className = {classes.columnName}>Harga Jual</div>
                             <div className = {classes.columnData}> 
@@ -105,6 +105,7 @@ export default function AddProduct () {
                                     variant = "outlined" 
                                     fullWidth 
                                     className = {classes.textField} 
+                                    InputProps = {{inputProps: {min: 0}}}
                                     onChange = {(e) => setPrice(e.target.value)}
                                     value = {price}
                                 />

@@ -14,12 +14,14 @@ import {
   KeyboardDatePicker,
   KeyboardTimePicker
 } from '@material-ui/pickers';
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import _ from 'lodash';
 
 import {getPricelist, addOrder} from '../api';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     columnData: {
         width: '600px'
     }, 
@@ -55,7 +57,13 @@ const useStyles = makeStyles(() => ({
         width: '900px', 
         marginLeft: '80px', 
         marginTop: '80px'
-    }
+    }, 
+    alert: {
+        width: '100%',
+        '& > * + *': {
+          marginTop: theme.spacing(2),
+        },
+    },
 }))
 
 export default function Input () {
@@ -69,6 +77,7 @@ export default function Input () {
     const [sendTime, setSendTime] =  useState('');
     const [basket, setBasket] = useState(['uwu']);
     const [openDialog, setOpenDialog] = useState(false);
+    const [open, setOpen] = useState(false);
 
 
     const columns = [
@@ -170,20 +179,39 @@ export default function Input () {
 
     const onSave = (customer, address, contact) => {
         const bracket =  _.filter(list, o => o.qty > 0);
-        // setBasket(bracket);
-        // console.log(bracket);
         addOrder(customer, address, contact, bracket)
         .then((res) => {
-            if (res.data.status == 'ok') {
-                window.location.href = '/'
-            }
-            else console.log('BIG NOO');
+            if (res.data.status == 'ok') setOpen(true);
+            else alert(res.data.msg);
         })
-        .catch((err) => alert(err))
+        .catch((err) => alert('Coba ulangi kembali'))
+    }
+
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
+    const handleClose = (reason) => {
+        setCustomer('');
+        setAddress('');
+        setContact('');
+        setOpen(false);
+        if (reason === 'clickaway'){
+            return;
+        }
+        window.location.href = '/'
     }
 
     return (
         <> 
+            <div className = {classes.alert}>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} color="success">
+                        Orderan telah tercatat! 
+                    </Alert>
+                </Snackbar>
+            </div>
+                
             <Card>
                 <CardContent>
                     <Grid>
@@ -196,6 +224,7 @@ export default function Input () {
                                     variant = "outlined" 
                                     fullWidth 
                                     className = {classes.textField} 
+                                    value = {customer}
                                     onChange = {(e) => setCustomer(e.target.value)}
                                 />
                             </div>
@@ -208,6 +237,7 @@ export default function Input () {
                                     variant = "outlined" 
                                     fullWidth 
                                     className = {classes.textField} 
+                                    value = {contact}
                                     onChange = {(e) => setContact(e.target.value)}
                                 />
                             </div>
@@ -220,6 +250,7 @@ export default function Input () {
                                     variant = "outlined" 
                                     fullWidth 
                                     className = {classes.textField} 
+                                    value = {address}
                                     onChange = {(e) => setAddress(e.target.value)}
                                 />
                             </div>

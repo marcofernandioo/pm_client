@@ -75,8 +75,8 @@ export default function EditProduct () {
         .then((res) => {
             if (res.data.status == 'ok') {
                 window.location.href = '/pricelist';
-                alert('Product edited');
-            } else console.log('Coba ulang kembali');
+                alert(res.data.msg);
+            } else alert(res.data.msg);
         })
     }
 

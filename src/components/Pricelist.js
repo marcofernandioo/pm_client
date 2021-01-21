@@ -74,9 +74,9 @@ export default function Pricelist () {
         getPricelist()
         .then(res => {
             if (res.data.status == 'ok') setProducts(res.data.list);
-            else alert('Coba ulang kembali');
+            else alert(res.data.msg);
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log('Coba ulangi kembali'));
     }
 
     const redirectToEditProduct = (id) => {
