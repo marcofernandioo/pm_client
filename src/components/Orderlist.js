@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Button from '@material-ui/core/Button';
 
-import {getBaskets, getOrderData} from '../api';
+import {getOrderData} from '../api';
 
 
 const useRowStyles = makeStyles({
@@ -26,45 +26,6 @@ const useRowStyles = makeStyles({
       },
     },
 });
-
-function createData(customer, address, contact, sendDate, total) {
-    return {
-      customer,
-      address,
-      contact,
-      sendDate,
-      total,
-      keranjang: [
-        {products: 'mannga1', qty: 69, total: 10000, desc: 'pahit'},
-        {products: 'mannga2', qty: 69, total: 10000, desc: 'pahit'}, 
-        {products: 'mannga3', qty: 69, total: 10000, desc: 'pahit'}
-      ],
-    };
-}
-
-const rows = [
-    createData('Aphing', "jl bintang", "08123", "nope", 10000),
-    createData('Aling', "jl bintang", "08123", "nope", 10000),
-    createData('Aciao', "jl bintang", "08123", "nope", 10000),
-    createData('Abe', "jl bintang", "08123", "nope", 10000),
-    createData('Auwu', "jl bintang", "08123", "nope", 10000),
-  ];
-
-
-// The data queried from the API.
-// const data = [
-//     {buyer, adr, ctc, sD, basket, total}, 
-//     {buyer, adr, ctc, sD, basket, total}, 
-// ]
-
-// const baskets = [
-//     [ //Basket of a person
-
-//     ], 
-//     [ // Basket of another person
-
-//     ],// etc.. until all of the baskets of a single day.
-// ]
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
 
@@ -80,6 +41,19 @@ function Row (props) {
     const classes = useRowStyles();
     const [open, setOpen] = useState(false);
     
+    const subtotal = calculateSubtotal(row);
+    function calculateSubtotal(row) {
+      let total = 0;
+      for (let i = 0; i < row.basket.length; i++) {
+        total += row.basket[i].total;
+      }
+      return total;
+    }
+
+    const totalBayar = getTotalBayar(row);
+    function getTotalBayar(row) {
+      return row.ongkir + subtotal;
+    }
 
     return (
         <>
@@ -119,16 +93,29 @@ function Row (props) {
                                     {/* Small Table' Data*/}
                                     {
                                       row.basket.map(product => (
-                                        <TableRow>
-                                          <TableCell component = "th" scope = "row">{product.name}</TableCell>
-                                          <TableCell>{product.qty}</TableCell>
-                                          <TableCell >{product.desc}</TableCell>
-                                          <TableCell>{format(product.total)}</TableCell>
-                                        </TableRow>
+                                        <>
+                                          <TableRow>
+                                            <TableCell component = "th" scope = "row">{product.name}</TableCell>
+                                            <TableCell>{product.qty}</TableCell>
+                                            <TableCell >{product.desc}</TableCell>
+                                            <TableCell>{format(product.total)}</TableCell>
+                                          </TableRow>
+                                        </>
                                       ))
                                     }
                                     <TableRow>
-
+                                        <TableCell rowSpan = {3}/>
+                                        <TableCell rowSpan = {3}/>
+                                        <TableCell colSpan = {1}>Subtotal</TableCell>
+                                        <TableCell align = "center" >{format(subtotal)}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Ongkir</TableCell>
+                                        <TableCell align = "center">{format(row.ongkir)}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Total Pembayaran</TableCell>
+                                        <TableCell align = "center">{format(totalBayar)}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -157,15 +144,12 @@ Row.propTypes = {
 
 export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
-    const [baskets, setBaskets] = useState([]);
-
 
     useEffect(() => {
       getOrderData()
       .then(res => {
-        // setOrderData(res.data.msg)
-        if (res.data.status == 'ok') {setOrderData(res.data.msg); console.log('uwu')}
-        else console.log(res.data.msg);
+        if (res.data.status == 'ok') setOrderData(res.data.msg); 
+        else alert(res.data.msg);
       })
       .catch(err => alert(err));
     }, [])
@@ -193,7 +177,6 @@ export default function Orderlist() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <Button variant = "outlined" onClick = {() => console.log(orderData)}> Fuck me!</Button> */}
       </>
     );
 }

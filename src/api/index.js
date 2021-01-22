@@ -50,10 +50,14 @@ export function addProduct(name,category, price) {
     })
 }
 
-export function addOrder (buyer, address, contact, basket, paid) {
+export function addOrder (buyer, address, contact, basket, paid, ongkir) {
+    // console.log(ongkir);
+    // console.log(typeof(ongkir))
+    let intOngkir = parseInt(ongkir);
+    // console.log(typeof(intOngkir))
     return new Promise ((resolve,reject) => {
         var url = `${URL}/order/add`;
-        axios.post(url, {buyer, address, contact, basket, paid})
+        axios.post(url, {buyer, address, contact, basket, paid, ongkir: intOngkir})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })

@@ -76,6 +76,7 @@ export default function Input () {
     const [sendDate, setSendDate] = useState(new Date);
     const [open, setOpen] = useState(false);
     const [paid, setPaid] = useState(false);
+    const [ongkir, setOngkir] = useState(0)
 
 
     const columns = [
@@ -87,7 +88,7 @@ export default function Input () {
             name: 'qty',
             label: 'Quantity',
             options: {
-                customBodyRender: (value, meta, table) => {
+                customBodyRender: (value, meta) => {
                     return (
                         <TextField 
                             value = {value}
@@ -101,14 +102,14 @@ export default function Input () {
             }
         },
         {
-            name: 'price',
+            name: 'strPrice',
             label: 'Harga',
         }, 
         {
             name: 'desc', 
             label: 'Keterangan', 
             options: {
-                customBodyRender: (value, meta, table) => {
+                customBodyRender: (value, meta) => {
                     return (
                         <TextField 
                             value = {value}
@@ -128,6 +129,7 @@ export default function Input () {
             if (res.data.status == 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
                     let product = res.data.list[i];
+                    product.strPrice = format(product.price);
                     product.desc = ""
                 }
                 setList(res.data.list);
@@ -143,10 +145,9 @@ export default function Input () {
 
     const onUpdateQty = (rowIndex, qty) => {
         let updateProducts = [ ...list ];
-        let price = updateProducts[rowIndex].total;
+        let price = updateProducts[rowIndex].price;
         updateProducts[rowIndex].qty = qty;
         updateProducts[rowIndex].total = qty * price;
-        // console.log(updateProducts[rowIndex]);
         setList(updateProducts);
     }
 
@@ -156,15 +157,17 @@ export default function Input () {
         setList(updateProducts);
     }
 
-    const onSave = (customer, address, contact, paid) => {
+    const onSave = (customer, address, contact, paid, ongkir) => {
         const bracket =  _.filter(list, o => o.qty > 0);
-        addOrder(customer, address, contact, bracket, paid)
+        addOrder(customer, address, contact, bracket, paid, ongkir)
         .then((res) => {
-            if (res.data.status == 'ok') setOpen(true);
-            else alert(res.data.msg);
+            if (res.data.status == 'ok') {
+                alert(res.data.msg);
+                window.location.href = '/'
+            }
+            else console.log(res.data.msg);
         })
-
-        .catch((err) => alert('Coba ulangi kembali'))
+        .catch(() => alert('Coba ulangi kembali'))
     }
 
     function Alert(props) {
@@ -186,6 +189,13 @@ export default function Input () {
         setPaid(e.target.checked);
     }
 
+
+    const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
+    function format(num) {
+        let res = formatter.format(num).split('IDR');
+        res = res.slice(1);
+        return `Rp.${res}`
+      }
 
     return (
         <> 
@@ -241,10 +251,23 @@ export default function Input () {
                             </div>
                         </div>
                         <div className = {classes.rowContainer}>
+                            <div className = {classes.columnName}>Ongkir</div>
+                            <div className = {classes.columnData}> 
+                                <TextField 
+                                    type = "number" 
+                                    variant = "outlined" 
+                                    fullWidth 
+                                    className = {classes.textField} 
+                                    value = {ongkir}
+                                    onChange = {(e) => setOngkir(e.target.value)}
+                                    InputProps = {{inputProps: {min: 0}}}
+                                ></TextField>
+                            </div>
+                        </div>
+                        <div className = {classes.rowContainer}>
                             <div className = {classes.columnName}>Tanggal Pengiriman</div>
                             <div className = {classes.columnData}> 
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                {/* <Grid container justify="space-around"> */}
                                     <KeyboardDatePicker
                                         disableToolbar
                                         variant="inline"
@@ -256,30 +279,6 @@ export default function Input () {
                                             'aria-label': 'change date',
                                         }}
                                     />
-                                {/* </Grid> */}
-                            </MuiPickersUtilsProvider>
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Jam Pengiriman</div>
-                            <div className = {classes.columnData}> 
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                {/* <Grid container justify="space-around"> */}
-                                <TextField
-                                    id="time"
-                                    type="time"
-                                    defaultValue= {sendDate}
-                                    format = "HH:mm"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    inputProps={{
-                                        step: 300, // 5 min
-                                    }}
-                                    onChange = {handleDateChange}
-                                />
-                                {/* </Grid> */}
                             </MuiPickersUtilsProvider>
                             </div>
                         </div>
@@ -287,13 +286,11 @@ export default function Input () {
                             <div className = {classes.columnName}>Sudah dibayar</div>
                             <div className = {classes.columnData}> 
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                {/* <Grid container justify="space-around"> */}
                                     <Checkbox
                                         checked={paid}
                                         onChange={handleChecks}
                                         inputProps={{ 'aria-label': 'primary checkbox' }}
                                     />
-                                {/* </Grid> */}
                             </MuiPickersUtilsProvider>
                             </div>
                         </div>
@@ -301,13 +298,12 @@ export default function Input () {
                             title = "List Produk"
                             data = {list}
                             columns = {columns}
-                            // options = {options}
+                            
                         />
 
                         <Button
                             variant = "contained"
-                            // onClick = {onSubmitTask}
-                            onClick = {() => onSave(customer, address, contact,paid)}
+                            onClick = {() => onSave(customer, address, contact,paid, ongkir)}
                             color = "secondary"
                             style = {{marginTop: "20px"}}
                         >
