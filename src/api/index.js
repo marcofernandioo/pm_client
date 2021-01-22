@@ -50,11 +50,29 @@ export function addProduct(name,category, price) {
     })
 }
 
-export function addOrder (buyer, address, contact, basket) {
+export function addOrder (buyer, address, contact, basket, paid) {
     return new Promise ((resolve,reject) => {
         var url = `${URL}/order/add`;
-        axios.post(url, {buyer, address, contact, basket})
+        axios.post(url, {buyer, address, contact, basket, paid})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
+    })
+}
+
+export function getBaskets() {
+    return new Promise((resolve, reject) => {
+        var url = `${URL}/order/baskets`;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err)); 
+    })
+}
+
+export function getOrderData() {
+    return new Promise((resolve, reject) => {
+        var url = `${URL}/order/data`;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err)); 
     })
 }

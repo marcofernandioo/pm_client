@@ -16,6 +16,7 @@ import {
 } from '@material-ui/pickers';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import _ from 'lodash';
 
@@ -68,16 +69,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Input () {
     const classes = useStyles();
-    // const [pricelist, setPricelist] = useState([]);
     const [list, setList] = useState([]);
     const [customer, setCustomer] = useState('');
     const [address, setAddress] = useState('');
     const [contact, setContact] = useState('');
     const [sendDate, setSendDate] = useState(new Date);
-    const [sendTime, setSendTime] =  useState('');
-    const [basket, setBasket] = useState(['uwu']);
-    const [openDialog, setOpenDialog] = useState(false);
     const [open, setOpen] = useState(false);
+    const [paid, setPaid] = useState(false);
 
 
     const columns = [
@@ -122,25 +120,6 @@ export default function Input () {
                 }
             }
         },
-        
-        // {
-        //     name: 'total', 
-        //     label: 'Total', 
-        //     options: {
-        //         customBodyRender: (value, meta, table) => {
-        //             return (
-        //                 <TextField 
-        //                     value = {value}
-        //                     defaultValue = ""
-        //                     variant = "outlined"
-        //                     type = "number"
-        //                     // onChange = {(e) => onUpdateDesc(meta.rowIndex, e.target.value)}
-        //                 />
-        //             )
-        //         }
-        //     }
-        // }
-        
     ]
 
     useEffect(() => {
@@ -177,13 +156,14 @@ export default function Input () {
         setList(updateProducts);
     }
 
-    const onSave = (customer, address, contact) => {
+    const onSave = (customer, address, contact, paid) => {
         const bracket =  _.filter(list, o => o.qty > 0);
-        addOrder(customer, address, contact, bracket)
+        addOrder(customer, address, contact, bracket, paid)
         .then((res) => {
             if (res.data.status == 'ok') setOpen(true);
             else alert(res.data.msg);
         })
+
         .catch((err) => alert('Coba ulangi kembali'))
     }
 
@@ -201,6 +181,11 @@ export default function Input () {
         }
         window.location.href = '/'
     }
+
+    const handleChecks = (e) => {
+        setPaid(e.target.checked);
+    }
+
 
     return (
         <> 
@@ -259,7 +244,7 @@ export default function Input () {
                             <div className = {classes.columnName}>Tanggal Pengiriman</div>
                             <div className = {classes.columnData}> 
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <Grid container justify="space-around">
+                                {/* <Grid container justify="space-around"> */}
                                     <KeyboardDatePicker
                                         disableToolbar
                                         variant="inline"
@@ -271,7 +256,7 @@ export default function Input () {
                                             'aria-label': 'change date',
                                         }}
                                     />
-                                </Grid>
+                                {/* </Grid> */}
                             </MuiPickersUtilsProvider>
                             </div>
                         </div>
@@ -279,7 +264,7 @@ export default function Input () {
                             <div className = {classes.columnName}>Jam Pengiriman</div>
                             <div className = {classes.columnData}> 
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <Grid container justify="space-around">
+                                {/* <Grid container justify="space-around"> */}
                                 <TextField
                                     id="time"
                                     type="time"
@@ -294,7 +279,21 @@ export default function Input () {
                                     }}
                                     onChange = {handleDateChange}
                                 />
-                                </Grid>
+                                {/* </Grid> */}
+                            </MuiPickersUtilsProvider>
+                            </div>
+                        </div>
+                        <div className = {classes.rowContainer}>
+                            <div className = {classes.columnName}>Sudah dibayar</div>
+                            <div className = {classes.columnData}> 
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                {/* <Grid container justify="space-around"> */}
+                                    <Checkbox
+                                        checked={paid}
+                                        onChange={handleChecks}
+                                        inputProps={{ 'aria-label': 'primary checkbox' }}
+                                    />
+                                {/* </Grid> */}
                             </MuiPickersUtilsProvider>
                             </div>
                         </div>
@@ -308,7 +307,7 @@ export default function Input () {
                         <Button
                             variant = "contained"
                             // onClick = {onSubmitTask}
-                            onClick = {() => onSave(customer, address, contact)}
+                            onClick = {() => onSave(customer, address, contact,paid)}
                             color = "secondary"
                             style = {{marginTop: "20px"}}
                         >
