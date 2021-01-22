@@ -66,6 +66,13 @@ const rows = [
 //     ],// etc.. until all of the baskets of a single day.
 // ]
 
+const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
+
+function format(num) {
+  let res = formatter.format(num).split('IDR');
+  res = res.slice(1);
+  return `Rp.${res}`
+}
 
 
 function Row (props) {
@@ -85,9 +92,9 @@ function Row (props) {
                         </IconButton>
                     </TableCell>
                     <TableCell component="th" scope="row">{row.buyer}</TableCell>
-                    <TableCell align="right">{row.address}</TableCell>
-                    <TableCell align="right">{row.contact}</TableCell>
-                    <TableCell align="right">{row.total}</TableCell>
+                    <TableCell align="left">{row.address}</TableCell>
+                    <TableCell align="left">{row.contact}</TableCell>
+                    <TableCell align="left">{format(row.total)}</TableCell>
                 </TableRow>
 
                 <TableRow>
@@ -100,25 +107,29 @@ function Row (props) {
                             <TableContainer component={Paper}>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
+                                  {/* Small Table's Head */}
                                     <TableRow>
                                         <TableCell>Produk</TableCell>
                                         <TableCell>Jumlah</TableCell>
                                         <TableCell>Keterangan </TableCell>
-                                        <TableCell align="right">Total (Rp.)</TableCell>
+                                        <TableCell>Total (Rp.)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
+                                    {/* Small Table' Data*/}
                                     {
                                       row.basket.map(product => (
                                         <TableRow>
                                           <TableCell component = "th" scope = "row">{product.name}</TableCell>
                                           <TableCell>{product.qty}</TableCell>
                                           <TableCell >{product.desc}</TableCell>
-                                          <TableCell align = "right">{product.total}</TableCell>
-
+                                          <TableCell>{format(product.total)}</TableCell>
                                         </TableRow>
                                       ))
                                     }
+                                    <TableRow>
+
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                             </TableContainer>
@@ -168,18 +179,12 @@ export default function Orderlist() {
               <TableRow>
                 <TableCell />
                 <TableCell>Customer</TableCell>
-                <TableCell align = "right">Alamat</TableCell>
-                <TableCell align = "right">Contact</TableCell>
-                <TableCell align = "right">Tanggal Pengiriman</TableCell>
-                <TableCell align = "right">Total</TableCell>
+                <TableCell align = "left">Alamat</TableCell>
+                <TableCell align = "left">Contact</TableCell>
+                <TableCell align = "left">Total</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {
-                orderData.map((row) => (
-                    <Row row = {row}>
-                ))  
-              } */}
               {
                 orderData.map(row => (
                   <Row row = {row} />
@@ -188,7 +193,7 @@ export default function Orderlist() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Button variant = "outlined" onClick = {() => console.log(orderData)}> Fuck me!</Button>
+        {/* <Button variant = "outlined" onClick = {() => console.log(orderData)}> Fuck me!</Button> */}
       </>
     );
 }
