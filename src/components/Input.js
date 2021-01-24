@@ -1,6 +1,14 @@
+/* 
+    Perhaps we check whether URL contains id or not?
+    If there is, we query that id, and display as an Edit Order Page,
+    if not, we dont query the id, and display it as Input Order Page.
+
+*/
+
 import React, {useState, useEffect} from 'react';
 import 'date-fns';
-// import MaterialTable from 'material-table';
+import {format} from 'date-fns';
+import moment from 'moment';
 import MUIDataTable from 'mui-datatables';
 import {makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -12,11 +20,11 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
-  KeyboardTimePicker
 } from '@material-ui/pickers';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import Checkbox from '@material-ui/core/Checkbox';
+
 
 import _ from 'lodash';
 
@@ -73,7 +81,7 @@ export default function Input () {
     const [customer, setCustomer] = useState('');
     const [address, setAddress] = useState('');
     const [contact, setContact] = useState('');
-    const [sendDate, setSendDate] = useState(new Date);
+    const [sendDate, setSendDate] = useState(new Date());
     const [open, setOpen] = useState(false);
     const [paid, setPaid] = useState(false);
     const [ongkir, setOngkir] = useState(0)
@@ -129,7 +137,7 @@ export default function Input () {
             if (res.data.status == 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
                     let product = res.data.list[i];
-                    product.strPrice = format(product.price);
+                    product.strPrice = formatCurrency(product.price);
                     product.desc = ""
                 }
                 setList(res.data.list);
@@ -140,7 +148,7 @@ export default function Input () {
     }, []);
 
     const handleDateChange = (date) => {
-        setSendDate(date)
+        setSendDate(date);
     }
 
     const onUpdateQty = (rowIndex, qty) => {
@@ -157,9 +165,11 @@ export default function Input () {
         setList(updateProducts);
     }
 
-    const onSave = (customer, address, contact, paid, ongkir) => {
+    const onSave = (customer, address, contact, paid, ongkir, sendDate) => {
         const bracket =  _.filter(list, o => o.qty > 0);
-        addOrder(customer, address, contact, bracket, paid, ongkir)
+        console.log(sendDate);
+        console.log(typeof(sendDate));
+        addOrder(customer, address, contact, bracket, paid, ongkir, sendDate)
         .then((res) => {
             if (res.data.status == 'ok') {
                 alert(res.data.msg);
@@ -191,7 +201,7 @@ export default function Input () {
 
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
-    function format(num) {
+    function formatCurrency(num) {
         let res = formatter.format(num).split('IDR');
         res = res.slice(1);
         return `Rp.${res}`
@@ -273,8 +283,9 @@ export default function Input () {
                                         variant="inline"
                                         format="dd/MM/yyyy"
                                         margin="normal"
+                                        
                                         value={sendDate}
-                                        onChange={handleDateChange}
+                                        onChange={(e) => handleDateChange(e)}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
@@ -303,7 +314,7 @@ export default function Input () {
 
                         <Button
                             variant = "contained"
-                            onClick = {() => onSave(customer, address, contact,paid, ongkir)}
+                            onClick = {() => onSave(customer, address, contact,paid, ongkir, sendDate)}
                             color = "secondary"
                             style = {{marginTop: "20px"}}
                         >

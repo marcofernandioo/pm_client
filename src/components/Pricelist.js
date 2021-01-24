@@ -44,12 +44,12 @@ export default function Pricelist () {
                 customBodyRender: (id) => {
                     return (
                         <div>
-                            <Tooltip title = "Edit Product">
+                            <Tooltip title = "Ubah Produk">
                                 <IconButton>
                                     <EditIcon onClick = {() => redirectToEditProduct(id)}/>
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title = "Delete Product">
+                            <Tooltip title = "Hapus Produk">
                                 <IconButton>
                                     <DeleteIcon onClick = {() => handleClickOpen(id)}/>
                                 </IconButton>
@@ -59,13 +59,12 @@ export default function Pricelist () {
                 }
             }
         }
-
     ]
 
     const options = {
         filterType: 'checkbox'
     }
-
+    
     useEffect(() => {
         loadPricelist();
     }, [products]);
@@ -73,7 +72,10 @@ export default function Pricelist () {
     const loadPricelist = () => {
         getPricelist()
         .then(res => {
-            if (res.data.status == 'ok') setProducts(res.data.list);
+            if (res.data.status == 'ok') {
+                setProducts(res.data.list);
+                console.log(res.data);
+            }
             else alert(res.data.msg);
         })
         .catch(err => console.log('Coba ulangi kembali'));

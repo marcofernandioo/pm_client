@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { az } from 'date-fns/esm/locale';
 
 const URL = 'http://localhost:8001';
 
@@ -50,14 +49,12 @@ export function addProduct(name,category, price) {
     })
 }
 
-export function addOrder (buyer, address, contact, basket, paid, ongkir) {
-    // console.log(ongkir);
-    // console.log(typeof(ongkir))
+export function addOrder (buyer, address, contact, basket, paid, ongkir, sendDate) {
     let intOngkir = parseInt(ongkir);
-    // console.log(typeof(intOngkir))
+    console.log(sendDate);
     return new Promise ((resolve,reject) => {
         var url = `${URL}/order/add`;
-        axios.post(url, {buyer, address, contact, basket, paid, ongkir: intOngkir})
+        axios.post(url, {buyer, address, contact, basket, paid, ongkir: intOngkir, sendDate})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })
@@ -78,5 +75,14 @@ export function getOrderData() {
         axios.get(url)
         .then((res) => resolve(res))
         .catch((err) => reject(err)); 
+    })
+}
+
+export function getDateOrders(date) {
+    return new Promise ((resolve, reject) => {
+        var url = URL+'/order/find?date='+date;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
     })
 }
