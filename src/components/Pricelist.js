@@ -31,7 +31,7 @@ export default function Pricelist () {
             options: {}
         }, 
         {
-            name: 'price', 
+            name: 'strPrice', 
             label: 'Harga Jual', 
             options: {}
         }, 
@@ -64,21 +64,35 @@ export default function Pricelist () {
     const options = {
         filterType: 'checkbox'
     }
+
+    const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
+    function formatCurrency(num) {
+        let res = formatter.format(num).split('IDR');
+        res = res.slice(1);
+        return `Rp.${res}`
+    }
     
     useEffect(() => {
         loadPricelist();
-    }, [products]);
+        console.log(products);
+
+    }, []);
 
     const loadPricelist = () => {
         getPricelist()
         .then(res => {
             if (res.data.status == 'ok') {
+                for (let i = 0; i < res.data.list.length; i++) {
+                    let product = res.data.list[i];
+                    product.strPrice = formatCurrency(product.price);
+                }
                 setProducts(res.data.list);
-                console.log(res.data);
+
+                // console.log(res.data);
             }
             else alert(res.data.msg);
         })
-        .catch(err => console.log('Coba ulangi kembali'));
+        .catch(() => console.log('Coba ulangi kembali'));
     }
 
     const redirectToEditProduct = (id) => {
