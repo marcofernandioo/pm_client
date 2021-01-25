@@ -19,11 +19,6 @@ export default function Pricelist () {
     const [id, setId] = useState({});
 
     const columns = [
-        // {
-        //     name: 'category', 
-        //     label: ' ', 
-        //     options: {}
-        // }, 
         {
 
             name: 'name', 
@@ -74,8 +69,6 @@ export default function Pricelist () {
     
     useEffect(() => {
         loadPricelist();
-        console.log(products);
-
     }, []);
 
     const loadPricelist = () => {
@@ -87,8 +80,6 @@ export default function Pricelist () {
                     product.strPrice = formatCurrency(product.price);
                 }
                 setProducts(res.data.list);
-
-                // console.log(res.data);
             }
             else alert(res.data.msg);
         })
@@ -96,14 +87,16 @@ export default function Pricelist () {
     }
 
     const redirectToEditProduct = (id) => {
-        window.location.href = '/edit/'+id
+        window.location.href = '/product/edit/'+id
     }
 
     const onDeleteProduct = (id) => {
         deleteProduct(id)
         .then((res) => {
-            // console.log(res);
-            if (res.data.status == 'ok') setOpen(false);
+            if (res.data.status == 'ok') {
+                setOpen(false);
+                loadPricelist();
+            }
             else alert(res.data.msg);
         })
         .catch(err => console.log(err));

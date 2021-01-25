@@ -32,6 +32,7 @@ import Sales from './Sales';
 import Orderlist from './Orderlist';
 import EditProduct from './EditProduct';
 import AddProduct from './AddProduct';
+import EditOrder from './EditOrder';
 
 
 const drawerWidth = 240;
@@ -89,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
   content: {
@@ -169,10 +169,10 @@ export default function MiniDrawer() {
               <ListItemIcon><MenuBookIcon/></ListItemIcon>
               <ListItemText primary = {"Pricelist"} />
           </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/sales'} >
+          {/* <ListItem button onClick = {() => window.location.href = '/sales'} >
               <ListItemIcon><EqualizerIcon/></ListItemIcon>
               <ListItemText primary = {"Sales"} />
-          </ListItem>
+          </ListItem> */}
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -182,7 +182,8 @@ export default function MiniDrawer() {
             <Route path = '/pricelist' component = {Pricelist} />
             <Route path = '/order' component = {Input} />
             <Route path = '/sales' component = {Sales} />
-            <Route path = '/edit/:id' component = {EditProduct} />
+            <Route path = '/product/edit/:id' component = {EditProduct} />
+            <Route path = '/edit/:id' component = {EditOrder} />
             <Route path = '/add' component = {AddProduct} />
             <Route exact path = '/' component = {Orderlist} />
         </Switch>

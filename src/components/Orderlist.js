@@ -32,7 +32,7 @@ import {
 
 import moment from 'moment';
 
-import {getDateOrders} from '../api';
+import {getDateOrders, deleteOrder} from '../api';
 
 
 const useRowStyles = makeStyles({
@@ -123,7 +123,12 @@ function Row (props) {
     }
 
     const handleEditClick = (id) => {
-      window.location.href = '/order/edit/'+id;
+      window.location.href = '/edit/'+id;
+    }
+
+    const change  = (paid) => {
+      if (paid) return 'Sudah';
+      else return 'Belum'
     }
     
 
@@ -139,11 +144,12 @@ function Row (props) {
                     <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">{row.contact}</TableCell>
                     <TableCell align="left">{format(row.total)}</TableCell>
+                    <TableCell align="left">{change(row.paid)}</TableCell>
                     <TableCell align="left">
                       <div>
-                        <Tooltip title = "Ubah Orderan">
+                        {/* <Tooltip title = "Ubah Orderan">
                           <IconButton> <EditIcon onClick = {() => handleEditClick(row._id)}/></IconButton>
-                        </Tooltip>
+                        </Tooltip> */}
                         <Tooltip title = "Hapus Ordran">
                           <IconButton> <DeleteIcon onClick = {() => handleDeleteClick(row._id)}/></IconButton>
                         </Tooltip>
@@ -233,7 +239,10 @@ export default function Orderlist() {
     useEffect(() => {
       getDateOrders(query)
       .then((res) => {
-        if (res.data.status == 'ok') setOrderData(res.data.msg);
+        if (res.data.status == 'ok') {
+          setOrderData(res.data.msg);
+          console.log(res.data.msg);
+        }
         else console.log(res);
       })
       .catch(err => alert(err));
@@ -246,6 +255,18 @@ export default function Orderlist() {
     const onChangeDate = (e) => {
       setQuery(moment(e).format('DD/MM/YYYY'));
       setDate(e);
+    }
+
+    const onDeleteOrder = (id) => {
+      deleteOrder(id)
+      .then((res) => {
+        if (res.data.status == 'ok') {
+          alert(res.data.msg);
+          window.location.href = '/';
+        }
+        else alert(res.data.msg);
+      })
+      .catch((err) => alert(err));
     }
 
     return (
@@ -307,7 +328,7 @@ export default function Orderlist() {
                       <Button onClick={() => setConfirm(false)} color="primary">
                           Kembali
                       </Button>
-                      <Button onClick={() => console.log(`${idValue} telah dihapus`)} color="primary" autoFocus>
+                      <Button onClick={() => onDeleteOrder(idValue)} color="primary" autoFocus>
                           Hapus
                       </Button>
                     </DialogActions>

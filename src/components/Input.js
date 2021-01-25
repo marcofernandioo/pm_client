@@ -136,6 +136,7 @@ export default function Input () {
         .then((res) => {
             if (res.data.status == 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
+                    console.log(res.data.list);
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
                     product.desc = ""
@@ -157,6 +158,7 @@ export default function Input () {
         updateProducts[rowIndex].qty = qty;
         updateProducts[rowIndex].total = qty * price;
         setList(updateProducts);
+        console.log(updateProducts);
     }
 
     const onUpdateDesc = (rowIndex, text) => {
@@ -167,9 +169,7 @@ export default function Input () {
 
     const onSave = (customer, address, contact, paid, ongkir, sendDate) => {
         const bracket =  _.filter(list, o => o.qty > 0);
-        console.log(sendDate);
-        console.log(typeof(sendDate));
-        addOrder(customer, address, contact, bracket, paid, ongkir, sendDate)
+        addOrder(customer, address, contact, bracket, paid, ongkir, sendDate, list)
         .then((res) => {
             if (res.data.status == 'ok') {
                 alert(res.data.msg);
@@ -205,7 +205,7 @@ export default function Input () {
         let res = formatter.format(num).split('IDR');
         res = res.slice(1);
         return `Rp.${res}`
-      }
+    }
 
     return (
         <> 

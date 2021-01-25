@@ -49,12 +49,11 @@ export function addProduct(name,category, price) {
     })
 }
 
-export function addOrder (buyer, address, contact, basket, paid, ongkir, sendDate) {
+export function addOrder (buyer, address, contact, basket, paid, ongkir, sendDate, fakelist) {
     let intOngkir = parseInt(ongkir);
-    console.log(sendDate);
     return new Promise ((resolve,reject) => {
         var url = `${URL}/order/add`;
-        axios.post(url, {buyer, address, contact, basket, paid, ongkir: intOngkir, sendDate})
+        axios.post(url, {buyer, address, contact, basket, paid, ongkir: intOngkir, sendDate, fakelist})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })
@@ -82,6 +81,43 @@ export function getDateOrders(date) {
     return new Promise ((resolve, reject) => {
         var url = URL+'/order/find?date='+date;
         axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}
+
+export function deleteOrder (id) {
+    return new Promise ((resolve, reject) => {
+        var url = `${URL}/order/delete/${id}`;
+        axios.get(url)
+        .then(res => resolve(res))
+        .catch(err => reject(err));
+    })
+}
+
+export function updateOrder (id, buyer, address, contact, basket, paid, ongkir, sendDate) {
+    let intOngkir = parseInt(ongkir);
+    return new Promise ((resolve,reject) => {
+        var url = `${URL}/order/update`;
+        axios.post(url, {id, buyer, address, contact, basket, paid, ongkir: intOngkir, sendDate})
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}
+
+export function findOrder(id) {
+    return new Promise((resolve,reject) => {
+        var url = `${URL}/order/findone/${id}`;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}
+
+export function dummy (fakelist) {
+    return new Promise((resolve,reject) => {
+        var url = `${URL}/order/dummy`;
+        axios.post(url, {fakelist})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })
