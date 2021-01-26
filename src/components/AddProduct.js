@@ -57,7 +57,7 @@ export default function AddProduct () {
     const onSubmitProduct = (name, category, price) => {
         addProduct(name, category, price)
         .then((res) => {
-            if (res.data.status == 'ok') window.location.href = '/pricelist'
+            if (res.data.status === 'ok') window.location.href = '/pricelist'
             else alert(res.data.msg);
         })
         .catch((err) => alert('Coba ulangi kembali'))

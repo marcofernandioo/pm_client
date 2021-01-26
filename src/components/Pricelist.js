@@ -11,7 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import {getPricelist, deleteProduct, editProduct} from '../api';
+import {getPricelist, deleteProduct} from '../api';
 
 export default function Pricelist () {
     const [products, setProducts] = useState([]);
@@ -74,7 +74,7 @@ export default function Pricelist () {
     const loadPricelist = () => {
         getPricelist()
         .then(res => {
-            if (res.data.status == 'ok') {
+            if (res.data.status === 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
@@ -93,7 +93,7 @@ export default function Pricelist () {
     const onDeleteProduct = (id) => {
         deleteProduct(id)
         .then((res) => {
-            if (res.data.status == 'ok') {
+            if (res.data.status === 'ok') {
                 setOpen(false);
                 loadPricelist();
             }

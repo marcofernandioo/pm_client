@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -122,9 +122,9 @@ function Row (props) {
       props.confirm(true);
     }
 
-    const handleEditClick = (id) => {
-      window.location.href = '/edit/'+id;
-    }
+    // const handleEditClick = (id) => {
+    //   window.location.href = '/edit/'+id;
+    // }
 
     const change  = (paid) => {
       if (paid) return 'Sudah';
@@ -239,7 +239,7 @@ export default function Orderlist() {
     useEffect(() => {
       getDateOrders(query)
       .then((res) => {
-        if (res.data.status == 'ok') {
+        if (res.data.status === 'ok') {
           setOrderData(res.data.msg);
           console.log(res.data.msg);
         }
@@ -260,7 +260,7 @@ export default function Orderlist() {
     const onDeleteOrder = (id) => {
       deleteOrder(id)
       .then((res) => {
-        if (res.data.status == 'ok') {
+        if (res.data.status === 'ok') {
           alert(res.data.msg);
           window.location.href = '/';
         }

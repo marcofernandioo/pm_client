@@ -7,8 +7,8 @@
 
 import React, {useState, useEffect} from 'react';
 import 'date-fns';
-import {format} from 'date-fns';
-import moment from 'moment';
+// import {format} from 'date-fns';
+// import moment from 'moment';
 import MUIDataTable from 'mui-datatables';
 import {makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -134,7 +134,7 @@ export default function Input () {
     useEffect(() => {
         getPricelist()
         .then((res) => {
-            if (res.data.status == 'ok') {
+            if (res.data.status === 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
                     console.log(res.data.list);
                     let product = res.data.list[i];
@@ -171,7 +171,7 @@ export default function Input () {
         const bracket =  _.filter(list, o => o.qty > 0);
         addOrder(customer, address, contact, bracket, paid, ongkir, sendDate, list)
         .then((res) => {
-            if (res.data.status == 'ok') {
+            if (res.data.status === 'ok') {
                 alert(res.data.msg);
                 window.location.href = '/'
             }

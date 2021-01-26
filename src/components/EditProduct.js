@@ -59,7 +59,7 @@ export default function EditProduct () {
     useEffect(() => {
         getProduct(id)
         .then((res) => {
-            if (res.data.status == 'ok') {
+            if (res.data.status === 'ok') {
                 setName(res.data.product.name);
                 setCategory(res.data.product.category);
                 setPrice(res.data.product.price);
@@ -73,7 +73,7 @@ export default function EditProduct () {
     const submitEditProduct = () => {
         editProduct(id,name,category,price)
         .then((res) => {
-            if (res.data.status == 'ok') {
+            if (res.data.status === 'ok') {
                 window.location.href = '/pricelist';
                 alert(res.data.msg);
             } else alert(res.data.msg);
