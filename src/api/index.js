@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'https://pasar-medan.herokuapp.com/';
+const URL = 'https://pasar-medan.herokuapp.com';
 
 axios.defaults.withCredentials = true;
 

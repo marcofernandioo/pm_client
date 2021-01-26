@@ -15,15 +15,15 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import MailIcon from '@material-ui/icons/Mail';
 
 import {Switch, Route} from 'react-router-dom';
 
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import AddIcon from '@material-ui/icons/Add';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
+// import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 
 import Input from './Input';

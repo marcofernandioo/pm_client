@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
 
 export default function AddProduct () {
     const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
+    // const [category, setCategory] = useState('');
     const [price, setPrice] = useState(1000);
 
     const classes = useStyles();
@@ -120,7 +120,7 @@ export default function AddProduct () {
                         </Button>
                         <Button
                             variant = "contained"
-                            onClick = {() => onSubmitProduct(name, category, price)}
+                            onClick = {() => onSubmitProduct(name, price)}
                             color = "secondary"
                         >
                             tambah

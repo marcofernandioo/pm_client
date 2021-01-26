@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import Routes from './components/Router'
-import Pricelist from './components/Pricelist'
 import {HashRouter} from 'react-router-dom';
 
 ReactDOM.render(

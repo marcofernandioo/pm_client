@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Input from './components/Input.js';
 import Navigations from './components/Navigations';
 
 function App() {
