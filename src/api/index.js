@@ -40,10 +40,10 @@ export function deleteProduct (id) {
     })
 }
 
-export function addProduct(name,category, price) {
+export function addProduct(name, price) {
     return new Promise((resolve,reject) => {
         var url = `${URL}/pricelist/add`;
-        axios.post(url, {name, category, price})
+        axios.post(url, {name, price})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })

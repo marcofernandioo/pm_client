@@ -157,7 +157,7 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          <ListItem button onClick = {() => window.location.href = '/order'} >
+          <ListItem button onClick = {() => window.location.href = '/#/order'} >
               <ListItemIcon><AddIcon/></ListItemIcon>
               <ListItemText primary = {"Add Order"} />
           </ListItem>
@@ -165,7 +165,7 @@ export default function MiniDrawer() {
               <ListItemIcon><FormatListBulletedIcon/></ListItemIcon>
               <ListItemText primary = {"Orderlist"} />
           </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/pricelist'} >
+          <ListItem button onClick = {() => window.location.href = '/#/pricelist'} >
               <ListItemIcon><MenuBookIcon/></ListItemIcon>
               <ListItemText primary = {"Pricelist"} />
           </ListItem>

@@ -136,16 +136,16 @@ export default function Input () {
         .then((res) => {
             if (res.data.status === 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
-                    console.log(res.data.list);
+                    // console.log(res.data.list);
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
                     product.desc = ""
                 }
                 setList(res.data.list);
             }
-            else console.log(res.data.msg)
+            else alert(res.data.msg)
         })
-        .catch(err => console.log(err));
+        .catch(err => alert(err));
     }, []);
 
     const handleDateChange = (date) => {
@@ -158,7 +158,7 @@ export default function Input () {
         updateProducts[rowIndex].qty = qty;
         updateProducts[rowIndex].total = qty * price;
         setList(updateProducts);
-        console.log(updateProducts);
+        // console.log(updateProducts);
     }
 
     const onUpdateDesc = (rowIndex, text) => {
@@ -175,7 +175,7 @@ export default function Input () {
                 alert(res.data.msg);
                 window.location.href = '/'
             }
-            else console.log(res.data.msg);
+            else alert(res.data.msg);
         })
         .catch(() => alert('Coba ulangi kembali'))
     }

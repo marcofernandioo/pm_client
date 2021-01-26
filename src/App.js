@@ -9,7 +9,7 @@ function App() {
       {/* <Input /> */}
       {/* <Navigations /> */}
       <Switch>
-        <Route path = '' component = {Navigations} />
+        <Route path = '/' component = {Navigations} />
       </Switch>
     </>
   )

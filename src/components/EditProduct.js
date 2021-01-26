@@ -67,14 +67,14 @@ export default function EditProduct () {
             else alert(res.data.msg);
             
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err));
     }, []);
 
     const submitEditProduct = () => {
         editProduct(id,name,category,price)
         .then((res) => {
             if (res.data.status === 'ok') {
-                window.location.href = '/pricelist';
+                window.location.href = '/#/pricelist';
                 alert(res.data.msg);
             } else alert(res.data.msg);
         })
@@ -128,7 +128,7 @@ export default function EditProduct () {
                         </div>
                         <Button
                             variant = "contained"
-                            onClick = {() => window.location.href = '/pricelist'}
+                            onClick = {() => window.location.href = '/#/pricelist'}
                             style = {{marginRight: '20px'}}
                         >
                             kembali

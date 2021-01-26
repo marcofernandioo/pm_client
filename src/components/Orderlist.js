@@ -241,9 +241,9 @@ export default function Orderlist() {
       .then((res) => {
         if (res.data.status === 'ok') {
           setOrderData(res.data.msg);
-          console.log(res.data.msg);
+          // console.log(res.data.msg);
         }
-        else console.log(res);
+        else alert(res);
       })
       .catch(err => alert(err));
     }, [query])

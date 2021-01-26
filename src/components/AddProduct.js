@@ -54,10 +54,10 @@ export default function AddProduct () {
 
     const classes = useStyles();
 
-    const onSubmitProduct = (name, category, price) => {
-        addProduct(name, category, price)
+    const onSubmitProduct = (name, price) => {
+        addProduct(name, price)
         .then((res) => {
-            if (res.data.status === 'ok') window.location.href = '/pricelist'
+            if (res.data.status === 'ok') window.location.href = '/#/pricelist'
             else alert(res.data.msg);
         })
         .catch((err) => alert('Coba ulangi kembali'))
@@ -113,7 +113,7 @@ export default function AddProduct () {
                         </div>
                         <Button
                             variant = "contained"
-                            onClick = {() => window.location.href = '/pricelist'}
+                            onClick = {() => window.location.href = '/#/pricelist'}
                             style = {{marginRight: '20px'}}
                         >
                             kembali

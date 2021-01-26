@@ -83,11 +83,11 @@ export default function Pricelist () {
             }
             else alert(res.data.msg);
         })
-        .catch(() => console.log('Coba ulangi kembali'));
+        .catch(() => alert('Coba ulangi kembali'));
     }
 
     const redirectToEditProduct = (id) => {
-        window.location.href = '/product/edit/'+id
+        window.location.href = '/#/product/edit/'+id
     }
 
     const onDeleteProduct = (id) => {
@@ -99,7 +99,7 @@ export default function Pricelist () {
             }
             else alert(res.data.msg);
         })
-        .catch(err => console.log(err));
+        .catch(err => alert(err));
     }
 
     const handleClickOpen = (id) => {
@@ -117,7 +117,7 @@ export default function Pricelist () {
                 style = {{marginBottom: '10px'}}
                 variant = "contained" 
                 color = "primary"
-                onClick = {() => window.location.href = '/add'}
+                onClick = {() => window.location.href = '/#/add'}
             >
                 Tambahkan produk
             </Button>
