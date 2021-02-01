@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-// import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -122,9 +122,9 @@ function Row (props) {
       props.confirm(true);
     }
 
-    // const handleEditClick = (id) => {
-    //   window.location.href = '/edit/'+id;
-    // }
+    const handleEditClick = (id) => {
+      window.location.href = '/#/edit/'+id;
+    }
 
     const change  = (paid) => {
       if (paid) return 'Sudah';
@@ -147,9 +147,9 @@ function Row (props) {
                     <TableCell align="left">{change(row.paid)}</TableCell>
                     <TableCell align="left">
                       <div>
-                        {/* <Tooltip title = "Ubah Orderan">
+                        <Tooltip title = "Ubah Orderan">
                           <IconButton> <EditIcon onClick = {() => handleEditClick(row._id)}/></IconButton>
-                        </Tooltip> */}
+                        </Tooltip>
                         <Tooltip title = "Hapus Ordran">
                           <IconButton> <DeleteIcon onClick = {() => handleDeleteClick(row._id)}/></IconButton>
                         </Tooltip>
