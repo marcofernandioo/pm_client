@@ -80,6 +80,7 @@ export default function EditOrder () {
     const [open, setOpen] = useState(false);
     const [paid, setPaid] = useState(false);
     const [ongkir, setOngkir] = useState(0)
+    const [subtotal, setSubtotal] = useState(0);
 
     let {id} = useParams();
 
@@ -144,6 +145,7 @@ export default function EditOrder () {
         //     else alert(res.data.msg)
         // })
         // .catch(err => console.log(err));
+        // console.log(total);
         findOrder(id)
         .then((res) => {
             if (res.data.status == 'ok') {
@@ -161,10 +163,9 @@ export default function EditOrder () {
                     // product.desc = ""
                 }
                 setList(data.fakelist);
+                setSubtotal(data.subtotal);
             } else alert(res.data.msg);
         })
-        
-
     }, []);
 
     const handleDateChange = (date) => {
@@ -189,10 +190,15 @@ export default function EditOrder () {
         console.log(meta);
     }
 
-    const onSave = (customer, address, contact, paid, ongkir, sendDate) => {
-        updateOrder(id, customer, address, contact, paid, ongkir, sendDate)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+    const onSave = (customer, address, contact, paid, ongkir, sendDate, subtotal) => {
+        // console.log(total);
+        console.log(customer, address, contact, paid, ongkir, sendDate, subtotal);
+        updateOrder(id, customer, address, contact, paid, ongkir, sendDate, subtotal)
+        .then((res) => {
+            if (res.data.status == 'ok') window.location.href = '/'
+            alert(res.data.msg);
+        })
+        .catch((err) => alert(err));
     }
 
     function Alert(props) {
@@ -328,7 +334,7 @@ export default function EditOrder () {
 
                         <Button
                             variant = "contained"
-                            onClick = {() => onSave(customer, address, contact,paid, ongkir, sendDate)}
+                            onClick = {() => onSave(customer, address, contact,paid, ongkir, sendDate, subtotal)}
                             color = "secondary"
                             style = {{marginTop: "20px"}}
                         >

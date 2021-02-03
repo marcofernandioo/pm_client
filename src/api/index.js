@@ -95,11 +95,11 @@ export function deleteOrder (id) {
     })
 }
 
-export function updateOrder (id, buyer, address, contact, paid, ongkir, sendDate) {
+export function updateOrder (id, buyer, address, contact, paid, ongkir, sendDate, subtotal) {
     let intOngkir = parseInt(ongkir);
     return new Promise ((resolve,reject) => {
         var url = `${URL}/order/update`;
-        axios.post(url, {id, buyer, address, contact, paid, ongkir: intOngkir, sendDate})
+        axios.post(url, {id, buyer, address, contact, paid, ongkir: intOngkir, sendDate, subtotal})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })
