@@ -11,12 +11,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Loading from './Loading';
 import {getPricelist, deleteProduct} from '../api';
 
 export default function Pricelist () {
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
     const [id, setId] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const columns = [
         {
@@ -68,6 +70,7 @@ export default function Pricelist () {
     }
     
     useEffect(() => {
+        setLoading(true);
         loadPricelist();
     }, []);
 
@@ -80,8 +83,9 @@ export default function Pricelist () {
                     product.strPrice = formatCurrency(product.price);
                 }
                 setProducts(res.data.list);
+                setLoading(false);
             }
-            else alert(res.data.msg);
+            else alert(res.data.msg); setLoading(false);
         })
         .catch(() => alert('Coba ulangi kembali'));
     }
@@ -148,6 +152,7 @@ export default function Pricelist () {
                 </Button>
                 </DialogActions>
             </Dialog>
+            <Loading open = {loading}/>
         </>
     )
 }           

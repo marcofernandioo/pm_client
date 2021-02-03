@@ -32,6 +32,7 @@ import {
 
 import moment from 'moment';
 
+import Loading from './Loading';
 import {getDateOrders, deleteOrder} from '../api';
 
 
@@ -141,8 +142,8 @@ function Row (props) {
                         </IconButton>
                     </TableCell>
                     <TableCell component="th" scope="row">{row.buyer}</TableCell>
-                    <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">{row.contact}</TableCell>
+                    <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">{format(row.total)}</TableCell>
                     <TableCell align="left">{change(row.paid)}</TableCell>
                     <TableCell align="left">
@@ -234,16 +235,19 @@ export default function Orderlist() {
     const [idValue, setIdValue] = useState('');
     const [date, setDate] = useState(new Date());
     const [query, setQuery] = useState(moment().format('DD/MM/YYYY'));
+    const [loading, setLoading] = useState(false);
     const classes = useStyles();
 
     useEffect(() => {
+      setLoading(true);
       getDateOrders(query)
       .then((res) => {
         if (res.data.status === 'ok') {
           setOrderData(res.data.msg);
+          setLoading(false);
           // console.log(res.data.msg);
         }
-        else alert(res);
+        else alert(res); setLoading(false);
       })
       .catch(err => alert(err));
     }, [query])
@@ -264,7 +268,7 @@ export default function Orderlist() {
           alert(res.data.msg);
           window.location.href = '/';
         }
-        else alert(res.data.msg);
+        else alert(res.data.msg); setLoading(false);
       })
       .catch((err) => alert(err));
     }
@@ -296,8 +300,8 @@ export default function Orderlist() {
               <TableRow>
                 <TableCell />
                 <TableCell>Customer</TableCell>
-                <TableCell align = "left">Alamat</TableCell>
                 <TableCell align = "left">Contact</TableCell>
+                <TableCell align = "left">Alamat</TableCell>
                 <TableCell align = "left">Total</TableCell>
                 <TableCell align = "left">Bayar</TableCell>
                 <TableCell align = "left"> </TableCell>
@@ -334,6 +338,7 @@ export default function Orderlist() {
                     </DialogActions>
                     
         </Dialog>
+        <Loading open = {loading} />
       </>
     );
 }

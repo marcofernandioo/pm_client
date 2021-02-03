@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
+import Loading from './Loading';
 import {addProduct} from '../api';
 
 const useStyles = makeStyles(() => ({
@@ -51,14 +52,16 @@ export default function AddProduct () {
     const [name, setName] = useState('');
     // const [category, setCategory] = useState('');
     const [price, setPrice] = useState(1000);
+    const [loading, setLoading] = useState(false);
 
     const classes = useStyles();
 
     const onSubmitProduct = (name, price) => {
+        setLoading(true);
         addProduct(name, price)
         .then((res) => {
-            if (res.data.status === 'ok') window.location.href = '/#/pricelist'
-            else alert(res.data.msg);
+            if (res.data.status === 'ok') {setLoading(false); window.location.href = '/#/pricelist';}
+            else alert(res.data.msg); setLoading(false);
         })
         .catch((err) => alert('Coba ulangi kembali'))
     }
@@ -129,6 +132,7 @@ export default function AddProduct () {
                     </Grid>
                 </CardContent>
             </Card>
+            <Loading open = {loading} />
         </>
     )
 }

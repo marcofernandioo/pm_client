@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
+import Loading from './Loading';
 import {getProduct, editProduct} from '../api';
 
 const useStyles = makeStyles(() => ({
@@ -52,19 +53,22 @@ export default function EditProduct () {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     let {id} = useParams();
     const classes = useStyles();
 
     useEffect(() => {
+        setLoading(true);
         getProduct(id)
         .then((res) => {
             if (res.data.status === 'ok') {
                 setName(res.data.product.name);
                 setCategory(res.data.product.category);
                 setPrice(res.data.product.price);
+                setLoading(false);
             }
-            else alert(res.data.msg);
+            else alert(res.data.msg); setLoading(false);
             
         })
         .catch((err) => alert(err));
@@ -144,6 +148,7 @@ export default function EditProduct () {
                     </Grid>
                 </CardContent>
             </Card>
+            <Loading open = {loading} />
         </>
     )
 }

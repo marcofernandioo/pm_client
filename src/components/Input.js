@@ -28,6 +28,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import _ from 'lodash';
 
+import Loading from './Loading';
 import {getPricelist, addOrder} from '../api';
 
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +86,7 @@ export default function Input () {
     const [open, setOpen] = useState(false);
     const [paid, setPaid] = useState(false);
     const [ongkir, setOngkir] = useState(0)
+    const [loading, setLoading] = useState(false);
 
 
     const columns = [
@@ -140,10 +142,11 @@ export default function Input () {
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
                     product.desc = ""
+                    
                 }
                 setList(res.data.list);
             }
-            else alert(res.data.msg)
+            else alert(res.data.msg);
         })
         .catch(err => alert(err));
     }, []);
@@ -168,14 +171,16 @@ export default function Input () {
     }
 
     const onSave = (customer, address, contact, paid, ongkir, sendDate) => {
+        setLoading(true);
         const bracket =  _.filter(list, o => o.qty > 0);
         addOrder(customer, address, contact, bracket, paid, ongkir, sendDate, list)
         .then((res) => {
             if (res.data.status === 'ok') {
+                setLoading(false);
                 alert(res.data.msg);
                 window.location.href = '/'
             }
-            else alert(res.data.msg);
+            else alert(res.data.msg); setLoading(false);
         })
         .catch(() => alert('Coba ulangi kembali'))
     }
@@ -323,6 +328,7 @@ export default function Input () {
                     </Grid>
                 </CardContent>
             </Card>
+            <Loading open = {loading} />
         </>
     )
 }

@@ -23,6 +23,7 @@ import {useParams} from 'react-router-dom';
 
 import _ from 'lodash';
 
+import Loading from './Loading';
 import {getPricelist, findOrder, updateOrder} from '../api';
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +82,7 @@ export default function EditOrder () {
     const [paid, setPaid] = useState(false);
     const [ongkir, setOngkir] = useState(0)
     const [subtotal, setSubtotal] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     let {id} = useParams();
 
@@ -146,6 +148,7 @@ export default function EditOrder () {
         // })
         // .catch(err => console.log(err));
         // console.log(total);
+        setLoading(true);
         findOrder(id)
         .then((res) => {
             if (res.data.status == 'ok') {
@@ -164,7 +167,8 @@ export default function EditOrder () {
                 }
                 setList(data.fakelist);
                 setSubtotal(data.subtotal);
-            } else alert(res.data.msg);
+                setLoading(false);
+            } else alert(res.data.msg); setLoading(false);
         })
     }, []);
 
@@ -191,11 +195,11 @@ export default function EditOrder () {
     }
 
     const onSave = (customer, address, contact, paid, ongkir, sendDate, subtotal) => {
-        // console.log(total);
-        console.log(customer, address, contact, paid, ongkir, sendDate, subtotal);
+        setLoading(true);
         updateOrder(id, customer, address, contact, paid, ongkir, sendDate, subtotal)
         .then((res) => {
             if (res.data.status == 'ok') window.location.href = '/'
+            setLoading(false);
             alert(res.data.msg);
         })
         .catch((err) => alert(err));
@@ -343,6 +347,7 @@ export default function EditOrder () {
                     </Grid>
                 </CardContent>
             </Card>
+            <Loading open = {loading} />
         </>
     )
 }
