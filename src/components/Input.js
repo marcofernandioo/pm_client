@@ -138,7 +138,7 @@ export default function Input () {
         .then((res) => {
             if (res.data.status === 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
-                    // console.log(res.data.list);
+                    console.log(res.data.list);
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
                     product.desc = ""
@@ -173,6 +173,7 @@ export default function Input () {
     const onSave = (customer, address, contact, paid, ongkir, sendDate) => {
         setLoading(true);
         const bracket =  _.filter(list, o => o.qty > 0);
+        console.log(bracket);
         addOrder(customer, address, contact, bracket, paid, ongkir, sendDate, list)
         .then((res) => {
             if (res.data.status === 'ok') {

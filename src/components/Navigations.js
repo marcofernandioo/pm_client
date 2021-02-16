@@ -23,6 +23,7 @@ import {Switch, Route} from 'react-router-dom';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import AddIcon from '@material-ui/icons/Add';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 // import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 
@@ -33,7 +34,9 @@ import Orderlist from './Orderlist';
 import EditProduct from './EditProduct';
 import AddProduct from './AddProduct';
 import EditOrder from './EditOrder';
+import OrderlistCustomer from './OrderlistCustomer';
 
+import Yeet from '../pages/Yeet';
 
 const drawerWidth = 240;
 
@@ -159,15 +162,19 @@ export default function MiniDrawer() {
         <List>
           <ListItem button onClick = {() => window.location.href = '/#/pricelist'} >
               <ListItemIcon><MenuBookIcon/></ListItemIcon>
-              <ListItemText primary = {"Pricelist"} />
+              <ListItemText primary = {"Pricelist Buah"} />
           </ListItem>
           <ListItem button onClick = {() => window.location.href = '/'} >
               <ListItemIcon><FormatListBulletedIcon/></ListItemIcon>
-              <ListItemText primary = {"Orderlist"} />
+              <ListItemText primary = {"Detail Orderan"} />
+          </ListItem>
+          <ListItem button onClick = {() => window.location.href = '/#/rekap'} >
+              <ListItemIcon><ListAltIcon/></ListItemIcon>
+              <ListItemText primary = {"Rekap Orderan"} />
           </ListItem>
           <ListItem button onClick = {() => window.location.href = '/#/order'} >
               <ListItemIcon><AddIcon/></ListItemIcon>
-              <ListItemText primary = {"Add Order"} />
+              <ListItemText primary = {"Tambah Order"} />
           </ListItem>
           
           
@@ -187,6 +194,8 @@ export default function MiniDrawer() {
             <Route path = '/product/edit/:id' component = {EditProduct} />
             <Route path = '/edit/:id' component = {EditOrder} />
             <Route path = '/add' component = {AddProduct} />
+            <Route path = '/rekap' component = {OrderlistCustomer} />
+            <Route path = '/yeet' component = {Yeet} />
             <Route exact path = '/' component = {Orderlist} />
         </Switch>
       </main>

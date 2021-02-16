@@ -335,7 +335,13 @@ export default function EditOrder () {
                             data = {list}
                             columns = {columns}
                         /> */}
-
+                        <Button
+                            variant = "contained"
+                            onClick = {() => window.location.href = '/#/'}
+                            style = {{marginTop: '20px', marginRight: '20px'}}
+                        >
+                            kembali
+                        </Button>
                         <Button
                             variant = "contained"
                             onClick = {() => onSave(customer, address, contact,paid, ongkir, sendDate, subtotal)}

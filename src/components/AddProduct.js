@@ -52,15 +52,19 @@ export default function AddProduct () {
     const [name, setName] = useState('');
     // const [category, setCategory] = useState('');
     const [price, setPrice] = useState(1000);
+    const [cost, setCost] = useState(1000);
     const [loading, setLoading] = useState(false);
 
     const classes = useStyles();
 
     const onSubmitProduct = (name, price) => {
         setLoading(true);
-        addProduct(name, price)
+        addProduct(name, price, cost)
         .then((res) => {
-            if (res.data.status === 'ok') {setLoading(false); window.location.href = '/#/pricelist';}
+            if (res.data.status === 'ok') {
+                setLoading(false); 
+                window.location.href = '/#/pricelist';
+            }
             else alert(res.data.msg); setLoading(false);
         })
         .catch((err) => alert('Coba ulangi kembali'))
@@ -111,6 +115,20 @@ export default function AddProduct () {
                                     InputProps = {{inputProps: {min: 0}}}
                                     onChange = {(e) => setPrice(e.target.value)}
                                     value = {price}
+                                />
+                            </div>
+                        </div>
+                        <div className = {classes.rowContainer}>
+                            <div className = {classes.columnName}>Harga Jual</div>
+                            <div className = {classes.columnData}> 
+                                <TextField 
+                                    type = "number" 
+                                    variant = "outlined" 
+                                    fullWidth 
+                                    className = {classes.textField} 
+                                    InputProps = {{inputProps: {min: 0}}}
+                                    onChange = {(e) => setCost(e.target.value)}
+                                    value = {cost}
                                 />
                             </div>
                         </div>

@@ -53,6 +53,7 @@ export default function EditProduct () {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [price, setPrice] = useState(0);
+    const [cost, setCost] = useState(0);
     const [loading, setLoading] = useState(false);
 
     let {id} = useParams();
@@ -66,6 +67,7 @@ export default function EditProduct () {
                 setName(res.data.product.name);
                 setCategory(res.data.product.category);
                 setPrice(res.data.product.price);
+                setCost(res.data.product.cost);
                 setLoading(false);
             }
             else alert(res.data.msg); setLoading(false);
@@ -75,12 +77,17 @@ export default function EditProduct () {
     }, []);
 
     const submitEditProduct = () => {
-        editProduct(id,name,category,price)
+        setLoading(true);
+        editProduct(id,name,category,price,cost)
         .then((res) => {
             if (res.data.status === 'ok') {
+                setLoading(false);
                 window.location.href = '/#/pricelist';
                 alert(res.data.msg);
-            } else alert(res.data.msg);
+            } else {
+                alert(res.data.msg);
+                setLoading(false);
+            }
         })
     }
 
@@ -127,6 +134,19 @@ export default function EditProduct () {
                                     className = {classes.textField} 
                                     onChange = {(e) => setPrice(e.target.value)}
                                     value = {price}
+                                />
+                            </div>
+                        </div>
+                        <div className = {classes.rowContainer}>
+                            <div className = {classes.columnName}>Modal</div>
+                            <div className = {classes.columnData}> 
+                                <TextField 
+                                    type = "number" 
+                                    variant = "outlined" 
+                                    fullWidth 
+                                    className = {classes.textField} 
+                                    onChange = {(e) => setCost(e.target.value)}
+                                    value = {cost}
                                 />
                             </div>
                         </div>

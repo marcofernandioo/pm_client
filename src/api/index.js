@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const URL = 'https://pasar-medan.herokuapp.com';
+// const URL = 'http://localhost:8008'
 
 axios.defaults.withCredentials = true;
 
@@ -22,10 +23,10 @@ export function getProduct (id) {
     })
 }
 
-export function editProduct (id, name, category, price) {
+export function editProduct (id, name, category, price, cost) {
     return new Promise((resolve,reject) => {
         var url = `${URL}/pricelist/update`;
-        axios.post(url, {id, name, category, price})
+        axios.post(url, {id, name, category, price, cost})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })
@@ -40,10 +41,10 @@ export function deleteProduct (id) {
     })
 }
 
-export function addProduct(name, price) {
+export function addProduct(name, price, cost) {
     return new Promise((resolve,reject) => {
         var url = `${URL}/pricelist/add`;
-        axios.post(url, {name, price})
+        axios.post(url, {name, price, cost})
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })
@@ -86,6 +87,15 @@ export function getDateOrders(date) {
     })
 }
 
+export function getDateRange(startdate, enddate) {
+    return new Promise ((resolve,reject) => {
+        var url = `${URL}/order/daterange?startdate=${startdate}&enddate=${enddate}`;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}
+
 export function deleteOrder (id) {
     return new Promise ((resolve, reject) => {
         var url = `${URL}/order/delete/${id}`;
@@ -118,6 +128,24 @@ export function dummy (fakelist) {
     return new Promise((resolve,reject) => {
         var url = `${URL}/order/dummy`;
         axios.post(url, {fakelist})
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}
+
+export function all () {
+    return new Promise((resolve,reject) => {
+        var url = `${URL}/order/all`;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}
+
+export function rangeSales(startdate,enddate) {
+    return new Promise ((resolve,reject) => {
+        var url = `${URL}/sales/rangesales?startdate=${startdate}&enddate=${enddate}`;
+        axios.get(url)
         .then((res) => resolve(res))
         .catch((err) => reject(err));
     })

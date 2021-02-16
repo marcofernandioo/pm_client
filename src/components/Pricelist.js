@@ -31,7 +31,12 @@ export default function Pricelist () {
             name: 'strPrice', 
             label: 'Harga Jual', 
             options: {}
-        }, 
+        },
+        {
+            name: 'strCost', 
+            label: 'Modal',
+            options: {}
+        },
         {
             name: '_id', 
             label: ' ', 
@@ -59,7 +64,8 @@ export default function Pricelist () {
     ]
 
     const options = {
-        filterType: 'checkbox'
+        filterType: 'checkbox', 
+        responsive: 'standard'
     }
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
@@ -81,6 +87,7 @@ export default function Pricelist () {
                 for (let i = 0; i < res.data.list.length; i++) {
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
+                    product.strCost = formatCurrency(product.cost);
                 }
                 setProducts(res.data.list);
                 setLoading(false);

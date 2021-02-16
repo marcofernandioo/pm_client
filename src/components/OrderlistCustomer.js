@@ -142,11 +142,10 @@ function Row (props) {
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
             </TableCell>
-            <TableCell align="left">{row.sendDateString}</TableCell>
             <TableCell component="th" scope="row">{row.buyer}</TableCell>
             <TableCell align="left">{row.contact}</TableCell>
             <TableCell align="left">{row.address}</TableCell>
-            <TableCell align="left">{format(row.totalCost)}</TableCell>
+            {/* <TableCell align="left">{format(row.totalCost)}</TableCell> */}
             <TableCell align="left">{format(row.total)}</TableCell>
             <TableCell align="left">{change(row.paid)}</TableCell>
             <TableCell align="left">
@@ -240,17 +239,11 @@ export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [idValue, setIdValue] = useState('');
-    const [startDateValue, setStartDateValue] = useState(new Date());
-    const [endDateValue, setEndDateValue] = useState(new Date());
     const [query, setQuery] = useState(moment().format('DD/MM/YYYY'));
-
-    const [startDate, setStartDate] = useState(moment().format('YYYY/MM/DD'));
-    const [endDate, setEndDate] = useState(moment().format('YYYY/MM/DD'));
+    const [date,setDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
 
-    const [revenue, setRevenue] = useState(null);
-    const [cost, setCost] = useState(null);
-    const [profit, setProfit] = useState(null);
+    
 
     // const URL = 'https://pasar-medan.herokuapp.com/order/all';
     // const {orders, err} = useSWR(URL, fetcher);
@@ -260,7 +253,7 @@ export default function Orderlist() {
 
     useEffect(() => {
       setLoading(true);
-      getSalesData(startDate,endDate);
+    //   getSalesData(startDate,endDate);
       getDateOrders(query)
       .then((res) => {
         if (res.data.status === 'ok') {
@@ -276,19 +269,9 @@ export default function Orderlist() {
       setConfirm(false);
     }
 
-    // const onChangeDate = (e) => {
-    //   setQuery(moment(e).format('DD/MM/YYYY'));
-    //   setDate(e);
-    // }
-
-    const onChangeStartDate = (e) => {
-      setStartDate(moment(e).format('YYYY/MM/DD'));
-      setStartDateValue(e);
-    }
-
-    const onChangeEndDate = (e) => {
-      setEndDate(moment(e).format('YYYY/MM/DD'));
-      setEndDateValue(e);
+    const onChangeDate = (e) => {
+      setQuery(moment(e).format('DD/MM/YYYY'));
+      setDate(e);
     }
 
     const onDeleteOrder = (id) => {
@@ -303,37 +286,9 @@ export default function Orderlist() {
       .catch((err) => alert(err));
     }
 
-    const getSalesData = (start,end) => {
-      rangeSales(start,end)
-      .then((res) => {
-        if (res.data.status === 'ok') {
-          setRevenue(res.data.msg.revenue)
-          setCost(res.data.msg.cost)
-          setProfit(res.data.msg.profit)
-        }
-        else alert('err'); 
-      })
-      .catch(err => alert(err));
-    }
-
-    const searchOrders = (startdate,enddate) => {
-      setLoading(true)
-      getDateRange(startdate,enddate)
-      .then((res) => {
-        if (res.data.status === 'ok') {
-          setOrderData(res.data.msg);
-          setLoading(false);
-        }
-        else alert(res); setLoading(false);
-      })
-      .catch(err => alert(err));
-      getSalesData(startdate,enddate);
-      
-    }
-
     return (
       <>
-        <h2>Detail Orderan: Pendapatan, Modal, Untung.</h2>
+        <h2>Rekap Orderan (Customer)</h2>
         
         <div className = {classes.rowContainer} >
             <div className = {classes.columnName}>Tanggal Awal</div>
@@ -344,41 +299,14 @@ export default function Orderlist() {
                         variant="inline"
                         format="dd/MM/yyyy"
                         margin="normal" 
-                        value={startDateValue}
-                        onChange={(e) => onChangeStartDate(e)}
+                        value={date}
+                        onChange={(e) => onChangeDate(e)}
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
                         }}
                     />
             </MuiPickersUtilsProvider>
             </div>
-        </div>
-        <div className = {classes.rowContainer} >
-            <div className = {classes.columnName}>Tanggal Akhir</div>
-            <div className = {classes.columnData}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="normal" 
-                        value={endDateValue}
-                        onChange={(e) => onChangeEndDate(e)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-            </MuiPickersUtilsProvider>
-            </div>
-        </div>
-        <div className = {classes.rowContainer} >
-          <Button
-            variant = "contained"
-            onClick = {() => searchOrders(startDate,endDate)}
-            color = "primary"
-          >
-            cari
-          </Button>
         </div>
         
         <br/>
@@ -387,11 +315,9 @@ export default function Orderlist() {
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell align = "left">Tgl.</TableCell>
                 <TableCell align = "left">Customer</TableCell>
                 <TableCell align = "left">Contact</TableCell>
                 <TableCell align = "left">Alamat</TableCell>
-                <TableCell align = "left">Modal</TableCell>
                 <TableCell align = "left">Total</TableCell>
                 <TableCell align = "left">Bayar</TableCell>
                 <TableCell align = "left"> </TableCell>
@@ -406,10 +332,7 @@ export default function Orderlist() {
             </TableBody>
           </Table>
         </TableContainer>
-        <br />
-        <h2>Pendapatan: {format(revenue)}</h2>
-        <h2>Modal: {format(cost)}</h2>
-        <h2>Untung: {format(profit)}</h2>
+        
         <Dialog
           open={confirm}
           onClose={handleCloseDialog}
