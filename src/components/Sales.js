@@ -1,9 +1,12 @@
 import React from 'react';
 
-export default function Statistics () {
+import DailyStats from './DailyStats'
+
+export default function Sales () {
     return (
         <>
-            <h2>Sales </h2>
+            <h2>Data Sales</h2>
+            <DailyStats />
         </>
     )
 }

@@ -150,3 +150,12 @@ export function rangeSales(startdate,enddate) {
         .catch((err) => reject(err));
     })
 }
+
+export function getDailySales(startdate,enddate) {
+    return new Promise ((resolve,reject) => {
+        var url = `${URL}/sales/statistics?startdate=${startdate}&enddate=${enddate}`;
+        axios.get(url)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    })
+}

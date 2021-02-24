@@ -24,7 +24,7 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import AddIcon from '@material-ui/icons/Add';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-// import EqualizerIcon from '@material-ui/icons/Equalizer';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 
 import Input from './Input';
@@ -176,12 +176,15 @@ export default function MiniDrawer() {
               <ListItemIcon><AddIcon/></ListItemIcon>
               <ListItemText primary = {"Tambah Order"} />
           </ListItem>
-          
-          
-          {/* <ListItem button onClick = {() => window.location.href = '/sales'} >
-              <ListItemIcon><EqualizerIcon/></ListItemIcon>
+          {/* <ListItem button onClick = {() => window.location.href = '/#/sales'} >
+              <ListItemIcon><AddIcon/></ListItemIcon>
               <ListItemText primary = {"Sales"} />
           </ListItem> */}
+          <ListItem button onClick = {() => window.location.href = '/#/sales'} >
+              <ListItemIcon><EqualizerIcon/></ListItemIcon>
+              <ListItemText primary = {"Sales"} />
+          </ListItem>
+          
         </List>
       </Drawer>
       <main className={classes.content}>

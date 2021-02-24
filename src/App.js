@@ -6,8 +6,6 @@ function App() {
   return (
     <>
       <h1>Pasar Medan</h1>
-      {/* <Input /> */}
-      {/* <Navigations /> */}
       <Switch>
         <Route path = '/' component = {Navigations} />
       </Switch>

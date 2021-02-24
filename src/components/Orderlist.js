@@ -23,20 +23,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
-import moment from 'moment';
 import useSWR from 'swr'
 
 import Loading from './Loading';
 import {getDateOrders, deleteOrder, all, getDateRange, rangeSales} from '../api';
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
 
 const useRowStyles = makeStyles({
     root: {
@@ -235,17 +229,13 @@ Row.propTypes = {
 
 // const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-
 export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [idValue, setIdValue] = useState('');
-    const [startDateValue, setStartDateValue] = useState(new Date());
-    const [endDateValue, setEndDateValue] = useState(new Date());
-    const [query, setQuery] = useState(moment().format('DD/MM/YYYY'));
-
-    const [startDate, setStartDate] = useState(moment().format('YYYY/MM/DD'));
-    const [endDate, setEndDate] = useState(moment().format('YYYY/MM/DD'));
+    const [startDateValue, setStartDateValue] = useState(new Date().toISOString().split('T')[0]);
+    const [endDateValue, setEndDateValue] = useState(new Date().toISOString().split('T')[0]);
+    
     const [loading, setLoading] = useState(false);
 
     const [revenue, setRevenue] = useState(null);
@@ -254,41 +244,24 @@ export default function Orderlist() {
 
     // const URL = 'https://pasar-medan.herokuapp.com/order/all';
     // const {orders, err} = useSWR(URL, fetcher);
+
+    // if (!orders) console.log("fucky orders");
+    // if (err) console.log("also fucky")
+    // console.log("orders cache: ", orders);
     
 
     const classes = useStyles();
-
-    useEffect(() => {
-      setLoading(true);
-      getSalesData(startDate,endDate);
-      getDateOrders(query)
-      .then((res) => {
-        if (res.data.status === 'ok') {
-          setOrderData(res.data.msg);
-          setLoading(false);
-        }
-        else alert(res); setLoading(false);
-      })
-      .catch(err => alert(err));
-    }, [query])
 
     const handleCloseDialog = () => {
       setConfirm(false);
     }
 
-    // const onChangeDate = (e) => {
-    //   setQuery(moment(e).format('DD/MM/YYYY'));
-    //   setDate(e);
-    // }
-
     const onChangeStartDate = (e) => {
-      setStartDate(moment(e).format('YYYY/MM/DD'));
-      setStartDateValue(e);
+      setStartDateValue(e.target.value);
     }
 
     const onChangeEndDate = (e) => {
-      setEndDate(moment(e).format('YYYY/MM/DD'));
-      setEndDateValue(e);
+      setEndDateValue(e.target.value);
     }
 
     const onDeleteOrder = (id) => {
@@ -328,7 +301,6 @@ export default function Orderlist() {
       })
       .catch(err => alert(err));
       getSalesData(startdate,enddate);
-      
     }
 
     return (
@@ -338,43 +310,43 @@ export default function Orderlist() {
         <div className = {classes.rowContainer} >
             <div className = {classes.columnName}>Tanggal Awal</div>
             <div className = {classes.columnData}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="normal" 
-                        value={startDateValue}
-                        onChange={(e) => onChangeStartDate(e)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-            </MuiPickersUtilsProvider>
+              <form className={classes.container} noValidate>
+                <TextField
+                  id="date"
+                  label="Dari"
+                  type="date"
+                  defaultValue={startDateValue}
+                  className={classes.textField}
+                  onChange={(e) => onChangeStartDate(e)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </form>
             </div>
         </div>
         <div className = {classes.rowContainer} >
             <div className = {classes.columnName}>Tanggal Akhir</div>
             <div className = {classes.columnData}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="normal" 
-                        value={endDateValue}
-                        onChange={(e) => onChangeEndDate(e)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-            </MuiPickersUtilsProvider>
+              <form className={classes.container} noValidate>
+                <TextField
+                    id="date"
+                    label="Sampai"
+                    type="date"
+                    value={endDateValue}
+                    className={classes.textField}
+                    onChange={(e) => onChangeEndDate(e)}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+              </form>
             </div>
         </div>
         <div className = {classes.rowContainer} >
           <Button
             variant = "contained"
-            onClick = {() => searchOrders(startDate,endDate)}
+            onClick = {() => searchOrders(startDateValue,endDateValue)}
             color = "primary"
           >
             cari

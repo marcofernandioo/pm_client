@@ -14,11 +14,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Loading from './Loading';
 import {getPricelist, deleteProduct} from '../api';
 
+import useSWR from 'swr';
+
+const fetcher = (...args) => fetch(...args).then(res => res.json());
 export default function Pricelist () {
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
     const [id, setId] = useState({});
     const [loading, setLoading] = useState(false);
+
+    const URL = 'https://pasar-medan.herokuapp.com/order/all';
+    const {pricelist} = useSWR(URL, fetcher);
+    console.log(pricelist);
+
 
     const columns = [
         {
