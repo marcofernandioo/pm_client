@@ -13,6 +13,8 @@ import Loading from './Loading';
 
 import {Bar} from '@reactchartjs/react-chart.js';
 
+
+
 const useStyles = makeStyles((theme) => ({
     columnData: {
         width: '600px'
@@ -86,6 +88,7 @@ export default function DailyStats () {
         .then((res) => {
             if (res.data.status == 'ok') {
                 setSalesdata(res.data.salesData);
+                console.log(res.data.salesData);
                 setLoading(false);
             } else {
                 alert('Error, ulangi kembali');

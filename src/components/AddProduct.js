@@ -119,7 +119,7 @@ export default function AddProduct () {
                             </div>
                         </div>
                         <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Harga Jual</div>
+                            <div className = {classes.columnName}>Modal</div>
                             <div className = {classes.columnData}> 
                                 <TextField 
                                     type = "number" 

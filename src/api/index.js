@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const URL = 'https://pasar-medan.herokuapp.com';
-// const URL = 'http://localhost:8008'
 
 axios.defaults.withCredentials = true;
 

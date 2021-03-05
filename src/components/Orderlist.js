@@ -227,7 +227,7 @@ Row.propTypes = {
 }
 
 
-// const fetcher = (...args) => fetch(...args).then(res => res.json());
+
 
 export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
@@ -242,13 +242,13 @@ export default function Orderlist() {
     const [cost, setCost] = useState(null);
     const [profit, setProfit] = useState(null);
 
-    // const URL = 'https://pasar-medan.herokuapp.com/order/all';
-    // const {orders, err} = useSWR(URL, fetcher);
+    const fetcher = (...args) => fetch(...args).then((res) => res.json())
+    const URL = 'https://pokeapi.co/api/v2/pokemon';
+    const {orders, err} = useSWR(URL, fetcher);
 
-    // if (!orders) console.log("fucky orders");
-    // if (err) console.log("also fucky")
-    // console.log("orders cache: ", orders);
-    
+    if (!orders) console.log("data not found");
+    if (err) console.log("error")
+    console.log("data: ", orders);
 
     const classes = useStyles();
 

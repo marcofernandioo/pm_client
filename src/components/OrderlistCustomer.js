@@ -23,6 +23,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -35,6 +38,7 @@ import useSWR from 'swr'
 
 import Loading from './Loading';
 import {getDateOrders, deleteOrder, all, getDateRange, rangeSales} from '../api';
+import { SettingsInputCompositeRounded } from '@material-ui/icons';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -89,6 +93,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
       },
   },
+  snackbar: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }))
 
 const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
@@ -99,12 +109,15 @@ function format(num) {
   return `Rp.${res}`
 }
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function Row (props) {
     const {row} = props;
     const classes = useRowStyles();
     const [open, setOpen] = useState(false);
-    
+    const [alert, setAlert] = useState(false);
     
     const subtotal = calculateSubtotal(row);
     function calculateSubtotal(row) {
@@ -114,6 +127,8 @@ function Row (props) {
       }
       return total;
     }
+
+    
 
     const totalBayar = getTotalBayar(row);
     function getTotalBayar(row) {
@@ -129,11 +144,29 @@ function Row (props) {
       window.location.href = '/#/edit/'+id;
     }
 
+    const handleCopyClick = (buyer,address,basket,ongkir,total) => {
+      let keranjang = '';
+      basket.map(product => {
+        keranjang += `\t${product.name}\t - ${product.qty}, Total: ${format(product.total)}\n`
+      })
+      navigator.clipboard.writeText(`Customer: ${buyer}.\nAlamat:${address}.\nPembelian:\n${keranjang}Ongkir: ${ongkir}.\nTotal Pembayaran: ${total}.`);
+      // setAlert(true);
+      // console.log('uwu')
+      props.alert(true);
+    }
+
     const change  = (paid) => {
       if (paid) return 'Sudah';
       else return 'Belum'
     }
     
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setAlert(false);
+    };
+
     return (
         <>
           <TableRow className = {classes.root}>
@@ -156,11 +189,15 @@ function Row (props) {
                 <Tooltip title = "Hapus Ordran">
                   <IconButton> <DeleteIcon onClick = {() => handleDeleteClick(row._id)}/></IconButton>
                 </Tooltip>
+                <Tooltip title = "Copy Detail Orderan">
+                    <IconButton onClick = {() => handleCopyClick(row.buyer, row.address, row.basket,format(row.ongkir), format(row.total))}> 
+                        <FileCopyIcon /> 
+                    </IconButton>
+                </Tooltip>
               </div>
             </TableCell>
           </TableRow>
-
-                <TableRow>
+          <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                             <Box margin={1}>
@@ -211,9 +248,13 @@ function Row (props) {
                             </TableContainer>
                             </Box>
                         </Collapse>
-                    </TableCell>
-                    
+                    </TableCell>    
                 </TableRow>
+                <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
+                  <Alert onClose={handleClose} severity="success">
+                    Detail Copied!
+                  </Alert>
+                </Snackbar>
         </>
     )
 }
@@ -242,6 +283,7 @@ export default function Orderlist() {
     const [query, setQuery] = useState(moment().format('DD/MM/YYYY'));
     const [date,setDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
+    const [alert, setAlert] = useState(false);
 
     
 
@@ -286,6 +328,13 @@ export default function Orderlist() {
       .catch((err) => alert(err));
     }
 
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setAlert(false);
+    };
+
     return (
       <>
         <h2>Rekap Orderan (Customer)</h2>
@@ -326,7 +375,12 @@ export default function Orderlist() {
             <TableBody>
               {
                 orderData.map(row => (
-                  <Row row = {row} id = {idValue => setIdValue(idValue)} confirm = {conf => setConfirm(conf)}/>
+                  <Row 
+                    row = {row} 
+                    id = {idValue => setIdValue(idValue)} 
+                    confirm = {conf => setConfirm(conf)} 
+                    alert = {alert => setAlert(alert)}
+                  />
                 ))
               }
             </TableBody>
@@ -355,6 +409,12 @@ export default function Orderlist() {
           </DialogActions>   
         </Dialog>
         <Loading open = {loading} />
+
+        <Snackbar open={alert} autoHideDuration={1000} onClose={handleClose}>
+                  <Alert onClose={handleClose} severity="success">
+                    Detail telah di copy!
+                  </Alert>
+        </Snackbar>
       </>
     );
 }
