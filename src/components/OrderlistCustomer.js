@@ -33,6 +33,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
+import TextField from '@material-ui/core/TextField';
+
 import moment from 'moment';
 import useSWR from 'swr'
 
@@ -183,16 +185,16 @@ function Row (props) {
             <TableCell align="left">{change(row.paid)}</TableCell>
             <TableCell align="left">
               <div>
+                <Tooltip title = "Copy Detail Orderan">
+                    <IconButton onClick = {() => handleCopyClick(row.buyer, row.address, row.basket,format(row.ongkir), format(row.total))}> 
+                        <FileCopyIcon /> 
+                    </IconButton>
+                </Tooltip>
                 <Tooltip title = "Ubah Orderan">
                   <IconButton> <EditIcon onClick = {() => handleEditClick(row._id)}/></IconButton>
                 </Tooltip>
                 <Tooltip title = "Hapus Ordran">
                   <IconButton> <DeleteIcon onClick = {() => handleDeleteClick(row._id)}/></IconButton>
-                </Tooltip>
-                <Tooltip title = "Copy Detail Orderan">
-                    <IconButton onClick = {() => handleCopyClick(row.buyer, row.address, row.basket,format(row.ongkir), format(row.total))}> 
-                        <FileCopyIcon /> 
-                    </IconButton>
                 </Tooltip>
               </div>
             </TableCell>
@@ -250,11 +252,6 @@ function Row (props) {
                         </Collapse>
                     </TableCell>    
                 </TableRow>
-                <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
-                  <Alert onClose={handleClose} severity="success">
-                    Detail Copied!
-                  </Alert>
-                </Snackbar>
         </>
     )
 }
@@ -280,8 +277,7 @@ export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [idValue, setIdValue] = useState('');
-    const [query, setQuery] = useState(moment().format('DD/MM/YYYY'));
-    const [date,setDate] = useState(new Date());
+    const [date,setDate] = useState(new Date().toISOString().split('T')[0]);
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState(false);
 
@@ -295,8 +291,7 @@ export default function Orderlist() {
 
     useEffect(() => {
       setLoading(true);
-    //   getSalesData(startDate,endDate);
-      getDateOrders(query)
+      getDateOrders(date)
       .then((res) => {
         if (res.data.status === 'ok') {
           setOrderData(res.data.msg);
@@ -305,15 +300,14 @@ export default function Orderlist() {
         else alert(res); setLoading(false);
       })
       .catch(err => alert(err));
-    }, [query])
+    }, [date])
 
     const handleCloseDialog = () => {
       setConfirm(false);
     }
 
     const onChangeDate = (e) => {
-      setQuery(moment(e).format('DD/MM/YYYY'));
-      setDate(e);
+      setDate(e.target.value);
     }
 
     const onDeleteOrder = (id) => {
@@ -328,7 +322,7 @@ export default function Orderlist() {
       .catch((err) => alert(err));
     }
 
-    const handleClose = (event, reason) => {
+    const handleClose = (reason) => {
       if (reason === 'clickaway') {
         return;
       }
@@ -338,23 +332,22 @@ export default function Orderlist() {
     return (
       <>
         <h2>Rekap Orderan (Customer)</h2>
-        
         <div className = {classes.rowContainer} >
             <div className = {classes.columnName}>Tanggal Awal</div>
             <div className = {classes.columnData}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        variant="inline"
-                        format="dd/MM/yyyy"
-                        margin="normal" 
-                        value={date}
-                        onChange={(e) => onChangeDate(e)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-            </MuiPickersUtilsProvider>
+              <form className={classes.container} noValidate>
+                <TextField
+                  id="date"
+                  label="Tanggal"
+                  type="date"
+                  defaultValue={date}
+                  className={classes.textField}
+                  onChange={(e) => onChangeDate(e)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </form>
             </div>
         </div>
         
@@ -364,6 +357,7 @@ export default function Orderlist() {
             <TableHead>
               <TableRow>
                 <TableCell />
+                
                 <TableCell align = "left">Customer</TableCell>
                 <TableCell align = "left">Contact</TableCell>
                 <TableCell align = "left">Alamat</TableCell>
@@ -411,9 +405,9 @@ export default function Orderlist() {
         <Loading open = {loading} />
 
         <Snackbar open={alert} autoHideDuration={1000} onClose={handleClose}>
-                  <Alert onClose={handleClose} severity="success">
-                    Detail telah di copy!
-                  </Alert>
+          <Alert onClose={handleClose} severity="success">
+            Detail telah di copy!
+          </Alert>
         </Snackbar>
       </>
     );
