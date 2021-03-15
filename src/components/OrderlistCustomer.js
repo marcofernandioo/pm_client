@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SendIcon from '@material-ui/icons/Send';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -146,16 +147,16 @@ function Row (props) {
       window.location.href = '/#/edit/'+id;
     }
 
-    const handleCopyClick = (buyer,address,basket,ongkir,total) => {
+    const handleCopyClick = (buyer,contact,address,basket,ongkir,total) => {
       let keranjang = '';
       basket.map(product => {
         keranjang += `\t${product.name}\t - ${product.qty}, Total: ${format(product.total)}\n`
       })
-      let text = `Customer: ${buyer}.\nAlamat:${address}.\nPembelian:\n${keranjang}Ongkir: ${ongkir}.\nTotal Pembayaran: ${total}.`;
-      console.log(text);
+      let text = `Customer\t: ${buyer}.\nAlamat\t\t: ${address}.\nPembelian\t:\n${keranjang}Ongkir\t\t\t: ${ongkir}.\nTotal Pembayaran: ${total}.`;
       let encodedText = encodeURI(text);
-      console.log(encodedText);
-      // navigator.clipboard.writeText();
+      let phone_no = contact.replace(/0/, '62');
+      let url = `https://wa.me/${phone_no}/?text=${encodedText}`;
+      window.open(url, '_blank');
     }
 
     const change  = (paid) => {
@@ -186,9 +187,9 @@ function Row (props) {
             <TableCell align="left">{change(row.paid)}</TableCell>
             <TableCell align="left">
               <div>
-                <Tooltip title = "Copy Detail Orderan">
+                <Tooltip title = "Kirimkan Detail Orderan dari WA">
                     <IconButton > 
-                        <FileCopyIcon onClick = {() => handleCopyClick(row.buyer, row.address, row.basket,format(row.ongkir), format(row.total))}/> 
+                        <SendIcon onClick = {() => handleCopyClick(row.buyer, row.contact, row.address, row.basket,format(row.ongkir), format(row.total))}/> 
                     </IconButton>
                 </Tooltip>
                 <Tooltip title = "Ubah Orderan">
