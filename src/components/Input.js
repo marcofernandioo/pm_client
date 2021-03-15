@@ -138,11 +138,9 @@ export default function Input () {
         .then((res) => {
             if (res.data.status === 'ok') {
                 for (let i = 0; i < res.data.list.length; i++) {
-                    console.log(res.data.list);
                     let product = res.data.list[i];
                     product.strPrice = formatCurrency(product.price);
                     product.desc = ""
-                    
                 }
                 setList(res.data.list);
             }
@@ -161,7 +159,6 @@ export default function Input () {
         updateProducts[rowIndex].qty = qty;
         updateProducts[rowIndex].total = qty * price;
         setList(updateProducts);
-        // console.log(updateProducts);
     }
 
     const onUpdateDesc = (rowIndex, text) => {
@@ -179,7 +176,7 @@ export default function Input () {
             if (res.data.status === 'ok') {
                 setLoading(false);
                 alert(res.data.msg);
-                window.location.href = '/'
+                window.location.href = '/#/rekap'
             }
             else alert(res.data.msg); setLoading(false);
         })

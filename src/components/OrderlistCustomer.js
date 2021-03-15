@@ -150,9 +150,9 @@ function Row (props) {
     const handleCopyClick = (buyer,contact,address,basket,ongkir,total) => {
       let keranjang = '';
       basket.map(product => {
-        keranjang += `\t${product.name}\t - ${product.qty}, Total: ${format(product.total)}\n`
+        keranjang += `\t${product.name} - ${product.qty} | Note: ${product.desc || '-'} | Total: ${format(product.total)}\n`
       })
-      let text = `Customer\t: ${buyer}.\nAlamat\t\t: ${address}.\nPembelian\t:\n${keranjang}Ongkir\t\t\t: ${ongkir}.\nTotal Pembayaran: ${total}.`;
+      let text = `Customer\t: ${buyer}.\nAlamat\t\t: ${address}.\nPembelian\t:\n${keranjang}Ongkir\t\t\t: ${ongkir}.\nTotal Pembayaran : ${total}.`;
       let encodedText = encodeURI(text);
       let phone_no = contact.replace(/0/, '62');
       let url = `https://wa.me/${phone_no}/?text=${encodedText}`;
@@ -182,7 +182,6 @@ function Row (props) {
             <TableCell component="th" scope="row">{row.buyer}</TableCell>
             <TableCell align="left">{row.contact}</TableCell>
             <TableCell align="left">{row.address}</TableCell>
-            {/* <TableCell align="left">{format(row.totalCost)}</TableCell> */}
             <TableCell align="left">{format(row.total)}</TableCell>
             <TableCell align="left">{change(row.paid)}</TableCell>
             <TableCell align="left">
@@ -272,9 +271,6 @@ Row.propTypes = {
 }
 
 
-// const fetcher = (...args) => fetch(...args).then(res => res.json());
-
-
 export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
     const [confirm, setConfirm] = useState(false);
@@ -282,11 +278,6 @@ export default function Orderlist() {
     const [date,setDate] = useState(new Date().toISOString().split('T')[0]);
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState(false);
-
-    
-
-    // const URL = 'https://pasar-medan.herokuapp.com/order/all';
-    // const {orders, err} = useSWR(URL, fetcher);
     
 
     const classes = useStyles();

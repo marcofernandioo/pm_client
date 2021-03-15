@@ -125,7 +125,6 @@ export default function EditOrder () {
                             variant = "outlined"
                             type = "text"
                             onChange = {(e) => onUpdateDesc(meta.rowIndex, e.target.value)}
-                            // onChange = {e => test(meta)}
                         />
                     )
                 }
@@ -134,25 +133,10 @@ export default function EditOrder () {
     ]
 
     useEffect(() => {
-        // getPricelist()
-        // .then((res) => {
-        //     if (res.data.status == 'ok') {
-        //         for (let i = 0; i < res.data.list.length; i++) {
-        //             let product = res.data.list[i];
-        //             product.strPrice = formatCurrency(product.price);
-        //             product.desc = ""
-        //         }
-        //         setList(res.data.list);
-        //     }
-        //     else alert(res.data.msg)
-        // })
-        // .catch(err => console.log(err));
-        // console.log(total);
         setLoading(true);
         findOrder(id)
         .then((res) => {
             if (res.data.status == 'ok') {
-                // console.log(res.data);
                 let data = res.data.msg;
                 setCustomer(data.buyer);
                 setAddress(data.address);
@@ -188,10 +172,6 @@ export default function EditOrder () {
         let updateProducts = [ ...list ];
         updateProducts[rowIndex].desc = text;
         setList(updateProducts);
-    }
-
-    const test = (meta) => {
-        console.log(meta);
     }
 
     const onSave = (customer, address, contact, paid, ongkir, sendDate, subtotal) => {
@@ -330,14 +310,9 @@ export default function EditOrder () {
                             </MuiPickersUtilsProvider>
                             </div>
                         </div>
-                        {/* <MUIDataTable 
-                            title = "List Produk"
-                            data = {list}
-                            columns = {columns}
-                        /> */}
                         <Button
                             variant = "contained"
-                            onClick = {() => window.location.href = '/#/'}
+                            onClick = {() => window.location.href = '/#/rekap'}
                             style = {{marginTop: '20px', marginRight: '20px'}}
                         >
                             kembali

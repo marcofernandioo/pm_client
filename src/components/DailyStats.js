@@ -93,8 +93,6 @@ export default function DailyStats () {
         getDailySales(start,end)
         .then((res) => {
             if (res.data.status == 'ok') {
-                // setSalesdata(res.data.salesData);
-                console.log(res.data.salesData);
                 setDates(res.data.salesData.date);
                 setRevenues(res.data.salesData.revenue);
                 setProfits(res.data.salesData.profit);
@@ -105,6 +103,21 @@ export default function DailyStats () {
         })
         .catch(() => alert('Error, coba ulangi kembali'))
     }
+
+    useEffect(() => {
+        getDailySales(startDateValue,endDateValue)
+        .then((res) => {
+            if (res.data.status == 'ok') {
+                setDates(res.data.salesData.date);
+                setRevenues(res.data.salesData.revenue);
+                setProfits(res.data.salesData.profit);
+                setLoading(false);
+            } else {
+                alert('Error, ulangi kembali');
+            }
+        })
+        .catch(() => alert('Error, coba ulangi kembali'))
+    }, []);
 
     const data = {
         labels: dates,
