@@ -62,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1), 
         marginRight: theme.spacing(1), 
         width: 200,
+    },
+    groupedBarChart: {
+        height: '50%',
+        width: '900px',
     }
 }))
 
@@ -70,7 +74,9 @@ export default function DailyStats () {
     const [endDateValue, setEndDateValue] = useState(new Date().toISOString().split('T')[0]);
     const [loading, setLoading] = useState(false);
 
-    const [salesdata, setSalesdata] = useState([]);
+    const [dates, setDates] = useState();
+    const [revenues, setRevenues] = useState();
+    const [profits, setProfits] = useState();
 
     const classes = useStyles();
 
@@ -87,8 +93,11 @@ export default function DailyStats () {
         getDailySales(start,end)
         .then((res) => {
             if (res.data.status == 'ok') {
-                setSalesdata(res.data.salesData);
+                // setSalesdata(res.data.salesData);
                 console.log(res.data.salesData);
+                setDates(res.data.salesData.date);
+                setRevenues(res.data.salesData.revenue);
+                setProfits(res.data.salesData.profit);
                 setLoading(false);
             } else {
                 alert('Error, ulangi kembali');
@@ -96,6 +105,34 @@ export default function DailyStats () {
         })
         .catch(() => alert('Error, coba ulangi kembali'))
     }
+
+    const data = {
+        labels: dates,
+        datasets: [
+            {
+                label: 'Revenue',
+                data: revenues,
+                backgroundColor: 'rgb(255, 99, 132)'
+            },
+            {
+                label: 'Profit',
+                data: profits,
+                backgroundColor: 'rgb(54, 162, 235)'
+            }
+        ],
+    }
+
+    const options = {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      }
 
     return (
         <>
@@ -148,9 +185,16 @@ export default function DailyStats () {
                                 cari
                             </Button>
                         </div>
+                        
+                    </Grid>
+                    <Grid className = {classes.groupedBarChart}>
+                        { dates && <Bar data={data} options={options} /> }
                     </Grid>
                 </CardContent>
+                
             </Card>
+            
+            
             <Loading open = {loading} />
             
         </>

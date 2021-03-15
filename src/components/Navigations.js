@@ -176,10 +176,10 @@ export default function MiniDrawer() {
               <ListItemIcon><AddIcon/></ListItemIcon>
               <ListItemText primary = {"Tambah Order"} />
           </ListItem>
-          {/* <ListItem button onClick = {() => window.location.href = '/#/sales'} >
+          <ListItem button onClick = {() => window.location.href = '/#/sales'} >
               <ListItemIcon><EqualizerIcon/></ListItemIcon>
               <ListItemText primary = {"Sales"} />
-          </ListItem> */}
+          </ListItem>
           
         </List>
       </Drawer>

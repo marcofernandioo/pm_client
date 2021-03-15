@@ -151,10 +151,11 @@ function Row (props) {
       basket.map(product => {
         keranjang += `\t${product.name}\t - ${product.qty}, Total: ${format(product.total)}\n`
       })
-      navigator.clipboard.writeText(`Customer: ${buyer}.\nAlamat:${address}.\nPembelian:\n${keranjang}Ongkir: ${ongkir}.\nTotal Pembayaran: ${total}.`);
-      // setAlert(true);
-      // console.log('uwu')
-      props.alert(true);
+      let text = `Customer: ${buyer}.\nAlamat:${address}.\nPembelian:\n${keranjang}Ongkir: ${ongkir}.\nTotal Pembayaran: ${total}.`;
+      console.log(text);
+      let encodedText = encodeURI(text);
+      console.log(encodedText);
+      // navigator.clipboard.writeText();
     }
 
     const change  = (paid) => {
@@ -186,8 +187,8 @@ function Row (props) {
             <TableCell align="left">
               <div>
                 <Tooltip title = "Copy Detail Orderan">
-                    <IconButton onClick = {() => handleCopyClick(row.buyer, row.address, row.basket,format(row.ongkir), format(row.total))}> 
-                        <FileCopyIcon /> 
+                    <IconButton > 
+                        <FileCopyIcon onClick = {() => handleCopyClick(row.buyer, row.address, row.basket,format(row.ongkir), format(row.total))}/> 
                     </IconButton>
                 </Tooltip>
                 <Tooltip title = "Ubah Orderan">
@@ -331,6 +332,11 @@ export default function Orderlist() {
 
     return (
       <>
+        <Snackbar open={alert} autoHideDuration={1000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            Detail telah di copy!
+          </Alert>
+        </Snackbar>
         <h2>Rekap Orderan (Customer)</h2>
         <div className = {classes.rowContainer} >
             <div className = {classes.columnName}>Tanggal Awal</div>
@@ -404,11 +410,7 @@ export default function Orderlist() {
         </Dialog>
         <Loading open = {loading} />
 
-        <Snackbar open={alert} autoHideDuration={1000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success">
-            Detail telah di copy!
-          </Alert>
-        </Snackbar>
+        
       </>
     );
 }

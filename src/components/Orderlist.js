@@ -27,6 +27,8 @@ import TextField from '@material-ui/core/TextField';
 
 import useSWR from 'swr'
 
+import axios from 'axios';
+
 import Loading from './Loading';
 import {getDateOrders, deleteOrder, all, getDateRange, rangeSales} from '../api';
 
@@ -242,13 +244,19 @@ export default function Orderlist() {
     const [cost, setCost] = useState(null);
     const [profit, setProfit] = useState(null);
 
-    const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
+
+    // const fetcher = (...args) => axios.get(...args).then((res) => res.data);
+    const  fetcher = (...args) => axios.get(...args).then(res => res.data);
     const URL = 'https://pokeapi.co/api/v2/pokemon';
+    // const URL = 'https://pasar-medan.herokuapp.com/order/all';
     const {orders, err} = useSWR(URL, fetcher);
 
     if (!orders) console.log("data not found");
     if (err) console.log("error")
     console.log("data: ", orders);
+
+
 
     const classes = useStyles();
 
