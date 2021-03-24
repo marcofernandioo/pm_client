@@ -5,7 +5,6 @@ import Navigations from './components/Navigations';
 function App() {
   return (
     <>
-      <h1>Pasar Medan</h1>
       <Switch>
         <Route path = '/' component = {Navigations} />
       </Switch>

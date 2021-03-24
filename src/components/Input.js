@@ -220,7 +220,7 @@ export default function Input () {
                 </Snackbar>
             </div>
                 
-            <Card>
+            <Card className = {classes.myCard}>
                 <CardContent>
                     <Grid>
                         <h2>Tambah Orderan</h2>

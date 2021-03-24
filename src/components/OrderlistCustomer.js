@@ -117,7 +117,7 @@ function Alert(props) {
 }
 
 function Row (props) {
-    const {row} = props;
+    const {row,date} = props;
     const classes = useRowStyles();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState(false);
@@ -147,12 +147,27 @@ function Row (props) {
       window.location.href = '/#/edit/'+id;
     }
 
-    const handleCopyClick = (buyer,contact,address,basket,ongkir,total) => {
+    const handleCopyClick = (buyer,contact,address,basket,ongkir,total,date) => {
       let keranjang = '';
       basket.map(product => {
-        keranjang += `\t${product.name} - ${product.qty} | Note: ${product.desc || '-'} | Total: ${format(product.total)}\n`
+        keranjang += `\n ${product.name} - ${product.qty}. Total: ${format(product.total)}`
       })
-      let text = `Customer\t: ${buyer}.\nAlamat\t\t: ${address}.\nPembelian\t:\n${keranjang}Ongkir\t\t\t: ${ongkir}.\nTotal Pembayaran : ${total}.`;
+      let text = 
+`*Order dari PASAR.MEDAN [${date}]*
+
+Order atas nama: ${buyer}.
+Alamat: ${address}.
+Produk: ${keranjang}
+Ongkir: ${ongkir}.
+*Total: ${total}.*
+
+Untuk Pembayaran Silakan Transfer ke
+*Bank BCA: 8000823601 - a.n. Tjan Fong Ngo*
+
+Thank You For Shopping with Us.
+
+PROMO BULAN INI
+Share di IG story dan tag @pasar.medan untuk mendapatkan sayuran GRATIS di pembelian berikutnya!`;
       let encodedText = encodeURI(text);
       let phone_no = contact.replace(/0/, '62');
       let url = `https://wa.me/${phone_no}/?text=${encodedText}`;
@@ -188,7 +203,7 @@ function Row (props) {
               <div>
                 <Tooltip title = "Kirimkan Detail Orderan dari WA">
                     <IconButton > 
-                        <SendIcon onClick = {() => handleCopyClick(row.buyer, row.contact, row.address, row.basket,format(row.ongkir), format(row.total))}/> 
+                        <SendIcon onClick = {() => handleCopyClick(row.buyer, row.contact, row.address, row.basket,format(row.ongkir), format(row.total), props.date)}/> 
                     </IconButton>
                 </Tooltip>
                 <Tooltip title = "Ubah Orderan">
@@ -368,7 +383,8 @@ export default function Orderlist() {
               {
                 orderData.map(row => (
                   <Row 
-                    row = {row} 
+                    row = {row}
+                    date = {date}
                     id = {idValue => setIdValue(idValue)} 
                     confirm = {conf => setConfirm(conf)} 
                     alert = {alert => setAlert(alert)}

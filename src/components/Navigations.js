@@ -162,19 +162,19 @@ export default function MiniDrawer() {
         <List>
           <ListItem button onClick = {() => window.location.href = '/#/pricelist'} >
               <ListItemIcon><MenuBookIcon/></ListItemIcon>
-              <ListItemText primary = {"Pricelist Buah"} />
-          </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/'} >
-              <ListItemIcon><FormatListBulletedIcon/></ListItemIcon>
-              <ListItemText primary = {"Detail Orderan"} />
-          </ListItem>
-          <ListItem button onClick = {() => window.location.href = '/#/rekap'} >
-              <ListItemIcon><ListAltIcon/></ListItemIcon>
-              <ListItemText primary = {"Rekap Orderan"} />
+              <ListItemText primary = {"Pricelist Produk"} />
           </ListItem>
           <ListItem button onClick = {() => window.location.href = '/#/order'} >
               <ListItemIcon><AddIcon/></ListItemIcon>
               <ListItemText primary = {"Tambah Order"} />
+          </ListItem>
+          <ListItem button onClick = {() => window.location.href = '/#/rekap'} >
+              <ListItemIcon><ListAltIcon/></ListItemIcon>
+              <ListItemText primary = {"Rekapan Order"} />
+          </ListItem>
+          <ListItem button onClick = {() => window.location.href = '/'} >
+              <ListItemIcon><FormatListBulletedIcon/></ListItemIcon>
+              <ListItemText primary = {"Detail Orderan"} />
           </ListItem>
           <ListItem button onClick = {() => window.location.href = '/#/sales'} >
               <ListItemIcon><EqualizerIcon/></ListItemIcon>
@@ -186,7 +186,6 @@ export default function MiniDrawer() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-            
             <Route path = '/pricelist' component = {Pricelist} />
             <Route path = '/order' component = {Input} />
             <Route path = '/sales' component = {Sales} />

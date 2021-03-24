@@ -178,7 +178,7 @@ export default function EditOrder () {
         setLoading(true);
         updateOrder(id, customer, address, contact, paid, ongkir, sendDate, subtotal)
         .then((res) => {
-            if (res.data.status == 'ok') window.location.href = '/'
+            if (res.data.status == 'ok') window.location.href = '/#/rekap'
             setLoading(false);
             alert(res.data.msg);
         })

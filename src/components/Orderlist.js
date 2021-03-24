@@ -145,7 +145,7 @@ function Row (props) {
             <TableCell align="left">{format(row.totalCost)}</TableCell>
             <TableCell align="left">{format(row.total)}</TableCell>
             <TableCell align="left">{change(row.paid)}</TableCell>
-            <TableCell align="left">
+            {/* <TableCell align="left">
               <div>
                 <Tooltip title = "Ubah Orderan">
                   <IconButton> <EditIcon onClick = {() => handleEditClick(row._id)}/></IconButton>
@@ -154,7 +154,7 @@ function Row (props) {
                   <IconButton> <DeleteIcon onClick = {() => handleDeleteClick(row._id)}/></IconButton>
                 </Tooltip>
               </div>
-            </TableCell>
+            </TableCell> */}
           </TableRow>
 
                 <TableRow>
