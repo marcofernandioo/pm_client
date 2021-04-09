@@ -24,26 +24,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
 import TextField from '@material-ui/core/TextField';
-
-import moment from 'moment';
-import useSWR from 'swr'
-
 import Loading from './Loading';
-import {getDateOrders, deleteOrder, all, getDateRange, rangeSales} from '../api';
-import { SettingsInputCompositeRounded } from '@material-ui/icons';
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+import {getDateOrders, deleteOrder,} from '../api';
 
 const useRowStyles = makeStyles({
     root: {
@@ -112,15 +96,11 @@ function format(num) {
   return `Rp.${res}`
 }
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 function Row (props) {
     const {row,date} = props;
     const classes = useRowStyles();
     const [open, setOpen] = useState(false);
-    const [alert, setAlert] = useState(false);
     
     const subtotal = calculateSubtotal(row);
     function calculateSubtotal(row) {
@@ -130,8 +110,6 @@ function Row (props) {
       }
       return total;
     }
-
-    
 
     const totalBayar = getTotalBayar(row);
     function getTotalBayar(row) {
@@ -178,13 +156,6 @@ Share di IG story dan tag @pasar.medan untuk mendapatkan sayuran GRATIS di pembe
       if (paid) return 'Sudah';
       else return 'Belum'
     }
-    
-    const handleClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-      setAlert(false);
-    };
 
     return (
         <>
@@ -292,9 +263,7 @@ export default function Orderlist() {
     const [idValue, setIdValue] = useState('');
     const [date,setDate] = useState(new Date().toISOString().split('T')[0]);
     const [loading, setLoading] = useState(false);
-    const [alert, setAlert] = useState(false);
     
-
     const classes = useStyles();
 
     useEffect(() => {
@@ -305,7 +274,7 @@ export default function Orderlist() {
           setOrderData(res.data.msg);
           setLoading(false);
         }
-        else alert(res); setLoading(false);
+        else alert(res.data.msg); setLoading(false);
       })
       .catch(err => alert(err));
     }, [date])
@@ -323,27 +292,16 @@ export default function Orderlist() {
       .then((res) => {
         if (res.data.status === 'ok') {
           alert(res.data.msg);
-          window.location.href = '/';
+          window.location.reload();
         }
         else alert(res.data.msg); setLoading(false);
       })
       .catch((err) => alert(err));
     }
 
-    const handleClose = (reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-      setAlert(false);
-    };
 
     return (
       <>
-        <Snackbar open={alert} autoHideDuration={1000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success">
-            Detail telah di copy!
-          </Alert>
-        </Snackbar>
         <h2>Rekap Orderan (Customer)</h2>
         <div className = {classes.rowContainer} >
             <div className = {classes.columnName}>Tanggal Awal</div>
@@ -370,7 +328,6 @@ export default function Orderlist() {
             <TableHead>
               <TableRow>
                 <TableCell />
-                
                 <TableCell align = "left">Customer</TableCell>
                 <TableCell align = "left">Contact</TableCell>
                 <TableCell align = "left">Alamat</TableCell>
@@ -387,7 +344,6 @@ export default function Orderlist() {
                     date = {date}
                     id = {idValue => setIdValue(idValue)} 
                     confirm = {conf => setConfirm(conf)} 
-                    alert = {alert => setAlert(alert)}
                   />
                 ))
               }
@@ -417,8 +373,6 @@ export default function Orderlist() {
           </DialogActions>   
         </Dialog>
         <Loading open = {loading} />
-
-        
       </>
     );
 }
