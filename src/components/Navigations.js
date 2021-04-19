@@ -15,8 +15,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
 
 import {Switch, Route} from 'react-router-dom';
 
@@ -36,7 +34,6 @@ import AddProduct from './AddProduct';
 import EditOrder from './EditOrder';
 import OrderlistCustomer from './OrderlistCustomer';
 
-import Yeet from '../pages/Yeet';
 
 const drawerWidth = 240;
 
@@ -193,7 +190,6 @@ export default function MiniDrawer() {
             <Route path = '/edit/:id' component = {EditOrder} />
             <Route path = '/add' component = {AddProduct} />
             <Route path = '/rekap' component = {OrderlistCustomer} />
-            <Route path = '/yeet' component = {Yeet} />
             <Route exact path = '/' component = {Orderlist} />
         </Switch>
       </main>

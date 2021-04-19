@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import DateFnsUtils from '@date-io/date-fns';
+import {nextDay} from 'date-fns'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -52,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     }, 
     textField: {
         marginTop: '10px',   
-        marginBottom: '10px'
+        marginBottom: '10px', 
+        width: '80%'
     }, 
     root: {
         flexDirection: 'column',   
@@ -85,7 +87,6 @@ export default function EditOrder () {
     const [loading, setLoading] = useState(false);
 
     let {id} = useParams();
-
 
     const columns = [
         {
@@ -147,7 +148,6 @@ export default function EditOrder () {
                 for (let i = 0; i < res.data.msg.fakelist.length; i++) {
                     let product = res.data.msg.fakelist[i];
                     product.strPrice = formatCurrency(product.price);
-                    // product.desc = ""
                 }
                 setList(data.fakelist);
                 setSubtotal(data.subtotal);
@@ -178,7 +178,7 @@ export default function EditOrder () {
         setLoading(true);
         updateOrder(id, customer, address, contact, paid, ongkir, sendDate, subtotal)
         .then((res) => {
-            if (res.data.status == 'ok') window.location.href = '/#/rekap'
+            if (res.data.status == 'ok') window.location.href = '/#/rekap';
             setLoading(false);
             alert(res.data.msg);
         })
@@ -224,11 +224,16 @@ export default function EditOrder () {
                 
             <Card>
                 <CardContent>
-                    <Grid>
-                        <h2>Ubah Orderan</h2>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Nama Customer</div>
-                            <div className = {classes.columnData}> 
+                    <Grid
+                        container
+                        style = {{marginLeft: '20px'}}
+                    >
+                        <h2>Ubah Orderan Customer</h2>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item md = {2} xs = {12} >
+                                Customer
+                            </Grid>
+                            <Grid item md = {10} xs = {12}>
                                 <TextField 
                                     type = "text" 
                                     variant = "outlined" 
@@ -237,11 +242,14 @@ export default function EditOrder () {
                                     value = {customer}
                                     onChange = {(e) => setCustomer(e.target.value)}
                                 />
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Contact</div>
-                            <div className = {classes.columnData}> 
+                            </Grid>
+                            
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item md = {2} xs = {12} >
+                                Contact
+                            </Grid>
+                            <Grid item md = {10} xs = {12}>
                                 <TextField 
                                     type = "text" 
                                     variant = "outlined" 
@@ -250,11 +258,13 @@ export default function EditOrder () {
                                     value = {contact}
                                     onChange = {(e) => setContact(e.target.value)}
                                 />
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Alamat</div>
-                            <div className = {classes.columnData}> 
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item md = {2} xs = {12} >
+                                Alamat
+                            </Grid>
+                            <Grid item md = {10} xs = {12}>
                                 <TextField 
                                     type = "text" 
                                     variant = "outlined" 
@@ -263,11 +273,13 @@ export default function EditOrder () {
                                     value = {address}
                                     onChange = {(e) => setAddress(e.target.value)}
                                 />
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Ongkir</div>
-                            <div className = {classes.columnData}> 
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item md = {2} xs = {12} >
+                                Ongkir
+                            </Grid>
+                            <Grid item md = {10} xs = {12}>
                                 <TextField 
                                     type = "number" 
                                     variant = "outlined" 
@@ -277,39 +289,42 @@ export default function EditOrder () {
                                     onChange = {(e) => setOngkir(e.target.value)}
                                     InputProps = {{inputProps: {min: 0}}}
                                 ></TextField>
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Tanggal Pengiriman</div>
-                            <div className = {classes.columnData}> 
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item md = {2} xs = {12} >
+                                Tanggal Pengiriman
+                            </Grid>
+                            <Grid item md = {10} xs = {12}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
                                         disableToolbar
                                         variant="inline"
                                         format="dd/MM/yyyy"
                                         margin="normal"
-                                        
                                         value={sendDate}
                                         onChange={(e) => handleDateChange(e)}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
                                     />
-                            </MuiPickersUtilsProvider>
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Sudah dibayar</div>
-                            <div className = {classes.columnData}> 
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <Checkbox
-                                        checked={paid}
-                                        onChange={handleChecks}
-                                        inputProps={{ 'aria-label': 'primary checkbox' }}
-                                    />
-                            </MuiPickersUtilsProvider>
-                            </div>
-                        </div>
+                                </MuiPickersUtilsProvider>
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item sm = {2} xs = {12} >
+                                Sudah Dibayar
+                            </Grid>
+                            <Grid item sm = {10} xs = {12}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <Checkbox
+                                            checked={paid}
+                                            onChange={handleChecks}
+                                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                                        />
+                                </MuiPickersUtilsProvider>
+                            </Grid>
+                        </Grid>
                         <Button
                             variant = "contained"
                             onClick = {() => window.location.href = '/#/rekap'}

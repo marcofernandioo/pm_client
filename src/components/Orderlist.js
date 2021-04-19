@@ -15,9 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -25,12 +22,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
-import useSWR from 'swr'
-
-import axios from 'axios';
-
 import Loading from './Loading';
-import {getDateOrders, deleteOrder, all, getDateRange, rangeSales} from '../api';
+import { deleteOrder, getDateRange, rangeSales} from '../api';
 
 
 
@@ -116,15 +109,6 @@ function Row (props) {
       return row.ongkir + subtotal;
     }
 
-    const handleDeleteClick = (id) => {
-      props.id(id)
-      props.confirm(true);
-    }
-
-    const handleEditClick = (id) => {
-      window.location.href = '/#/edit/'+id;
-    }
-
     const change  = (paid) => {
       if (paid) return 'Sudah';
       else return 'Belum'
@@ -145,16 +129,6 @@ function Row (props) {
             <TableCell align="left">{format(row.totalCost)}</TableCell>
             <TableCell align="left">{format(row.total)}</TableCell>
             <TableCell align="left">{change(row.paid)}</TableCell>
-            {/* <TableCell align="left">
-              <div>
-                <Tooltip title = "Ubah Orderan">
-                  <IconButton> <EditIcon onClick = {() => handleEditClick(row._id)}/></IconButton>
-                </Tooltip>
-                <Tooltip title = "Hapus Ordran">
-                  <IconButton> <DeleteIcon onClick = {() => handleDeleteClick(row._id)}/></IconButton>
-                </Tooltip>
-              </div>
-            </TableCell> */}
           </TableRow>
 
                 <TableRow>
@@ -228,35 +202,16 @@ Row.propTypes = {
   })
 }
 
-
-
-
 export default function Orderlist() {
     const [orderData, setOrderData] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [idValue, setIdValue] = useState('');
     const [startDateValue, setStartDateValue] = useState(new Date().toISOString().split('T')[0]);
     const [endDateValue, setEndDateValue] = useState(new Date().toISOString().split('T')[0]);
-    
     const [loading, setLoading] = useState(false);
-
     const [revenue, setRevenue] = useState(null);
     const [cost, setCost] = useState(null);
     const [profit, setProfit] = useState(null);
-
-
-
-    // const fetcher = (...args) => axios.get(...args).then((res) => res.data);
-    const  fetcher = (...args) => axios.get(...args).then(res => res.data);
-    const URL = 'https://pokeapi.co/api/v2/pokemon';
-    // const URL = 'https://pasar-medan.herokuapp.com/order/all';
-    const {orders, err} = useSWR(URL, fetcher);
-
-    if (!orders) console.log("data not found");
-    if (err) console.log("error")
-    console.log("data: ", orders);
-
-
 
     const classes = useStyles();
 

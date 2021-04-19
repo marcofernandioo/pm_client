@@ -36,7 +36,8 @@ const useStyles = makeStyles(() => ({
     }, 
     textField: {
         marginTop: '10px',   
-        marginBottom: '10px'
+        marginBottom: '10px', 
+        width: '80%'
     }, 
     root: {
         flexDirection: 'column',   
@@ -71,7 +72,6 @@ export default function EditProduct () {
                 setLoading(false);
             }
             else alert(res.data.msg); setLoading(false);
-            
         })
         .catch((err) => alert(err));
     }, []);

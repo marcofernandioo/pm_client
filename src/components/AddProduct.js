@@ -35,7 +35,8 @@ const useStyles = makeStyles(() => ({
     }, 
     textField: {
         marginTop: '10px',   
-        marginBottom: '10px'
+        marginBottom: '10px', 
+        width: '80%'
     }, 
     root: {
         flexDirection: 'column',   
@@ -50,7 +51,6 @@ const useStyles = makeStyles(() => ({
 
 export default function AddProduct () {
     const [name, setName] = useState('');
-    // const [category, setCategory] = useState('');
     const [price, setPrice] = useState(1000);
     const [cost, setCost] = useState(1000);
     const [loading, setLoading] = useState(false);
@@ -72,13 +72,18 @@ export default function AddProduct () {
 
     return (
         <>
-            <Card>
+            <Card className = {classes.myCard}>
                 <CardContent>
-                    <Grid>
-                        <h2>TAMBAHKAN PRODUK BARU</h2>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Nama Lengkap Buah</div>
-                            <div className = {classes.columnData}> 
+                    <Grid
+                        container
+                        style = {{marginLeft: '20px'}}
+                    >
+                        <h2 style = {{marginRight: '25px'}}>Tambahkan Produk Baru</h2>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item sm = {2} xs = {12} >
+                                Nama Produk
+                            </Grid>
+                            <Grid item sm = {10} xs = {12}>
                                 <TextField 
                                     type = "text" 
                                     variant = "outlined" 
@@ -88,25 +93,13 @@ export default function AddProduct () {
                                     onChange = {(e) => setName(e.target.value)}
                                     placeholder = "contoh. Mangga Harum Manis"
                                 />
-                            </div>
-                        </div>
-                        {/* <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Jenis Buah</div>
-                            <div className = {classes.columnData}> 
-                                <TextField 
-                                    type = "text" 
-                                    variant = "outlined" 
-                                    fullWidth 
-                                    className = {classes.textField} 
-                                    onChange = {(e) => setCategory(e.target.value)}
-                                    value = {category}
-                                    placeholder = "contoh: Mangga"
-                                />
-                            </div>
-                        </div> */}
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Harga Jual</div>
-                            <div className = {classes.columnData}> 
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item sm = {2} xs = {12} >
+                                Harga Jual
+                            </Grid>
+                            <Grid item sm = {10} xs = {12}>
                                 <TextField 
                                     type = "number" 
                                     variant = "outlined" 
@@ -116,11 +109,13 @@ export default function AddProduct () {
                                     onChange = {(e) => setPrice(e.target.value)}
                                     value = {price}
                                 />
-                            </div>
-                        </div>
-                        <div className = {classes.rowContainer}>
-                            <div className = {classes.columnName}>Modal</div>
-                            <div className = {classes.columnData}> 
+                            </Grid>
+                        </Grid>
+                        <Grid container item alignItems = 'center'>
+                            <Grid item sm = {2} xs = {12} >
+                                Modal
+                            </Grid>
+                            <Grid item sm = {10} xs = {12}>
                                 <TextField 
                                     type = "number" 
                                     variant = "outlined" 
@@ -130,23 +125,25 @@ export default function AddProduct () {
                                     onChange = {(e) => setCost(e.target.value)}
                                     value = {cost}
                                 />
-                            </div>
+                            </Grid>
+                        </Grid>
+                        <div style = {{marginTop: '10px', marginRight: '25px'}}>
+                            <Button
+                                variant = "contained"
+                                onClick = {() => window.location.href = '/#/pricelist'}
+                                style = {{marginRight: '20px'}}
+                            >
+                                kembali
+                            </Button>
+                            <Button
+                                variant = "contained"
+                                onClick = {() => onSubmitProduct(name, price)}
+                                color = "secondary"
+                            >
+                                tambah
+                            </Button>
                         </div>
-                        <Button
-                            variant = "contained"
-                            onClick = {() => window.location.href = '/#/pricelist'}
-                            style = {{marginRight: '20px'}}
-                        >
-                            kembali
-                        </Button>
-                        <Button
-                            variant = "contained"
-                            onClick = {() => onSubmitProduct(name, price)}
-                            color = "secondary"
-                        >
-                            tambah
-                        </Button>
-
+                        
                     </Grid>
                 </CardContent>
             </Card>

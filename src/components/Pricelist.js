@@ -14,19 +14,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Loading from './Loading';
 import {getPricelist, deleteProduct} from '../api';
 
-import useSWR from 'swr';
 
-const fetcher = (...args) => fetch(...args).then(res => res.json());
 export default function Pricelist () {
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
     const [id, setId] = useState({});
     const [loading, setLoading] = useState(false);
-
-    const URL = 'https://pasar-medan.herokuapp.com/order/all';
-    const {pricelist} = useSWR(URL, fetcher);
-    console.log(pricelist);
-
 
     const columns = [
         {
@@ -72,8 +65,13 @@ export default function Pricelist () {
     ]
 
     const options = {
-        filterType: 'checkbox', 
-        responsive: 'standard'
+        filter: false,
+        responsive: 'standard', 
+        print: false,
+        download: false, 
+        jumpToPage: true,
+        viewColumns: false,
+        selectableRows: 'none'
     }
 
     const formatter = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'IDR'});
